@@ -1,11 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LethalCompanyInputUtils.Api;
+using UnityEngine.InputSystem;
 
 namespace LethalHands
 {
@@ -20,7 +17,7 @@ namespace LethalHands
         private readonly Harmony harmony = new Harmony(modGUID);
         internal ManualLogSource manualLogSource;
 
-
+        internal static SquareUpInput squareUpInput = SquareUpInput.Instance;
 
         void Awake()
         {
@@ -28,7 +25,15 @@ namespace LethalHands
             manualLogSource = BepInEx.Logging.Logger.CreateLogSource(modGUID);
             manualLogSource.LogInfo("Successfully caught these hands");
             harmony.PatchAll(typeof(LethalHands));
+        }
 
+        public class SquareUpInput : LcInputActions
+        {
+            public static SquareUpInput Instance = new SquareUpInput();
+
+            [InputAction(kbmPath: "<Keyboard>/t", Name = "Square up")]
+
+            public InputAction SquareUpKey { get; set; }
         }
     }
 }
