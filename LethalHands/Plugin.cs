@@ -3,8 +3,6 @@ using BepInEx.Logging;
 using GameNetcodeStuff;
 using HarmonyLib;
 using LethalCompanyInputUtils.Api;
-using System;
-using System.Linq;
 using UnityEngine.InputSystem;
 
 namespace LethalHands
@@ -23,8 +21,8 @@ namespace LethalHands
         internal static SquareUpInput squareUpInput = SquareUpInput.Instance;
         static bool isSquaredUp = false;
         static PlayerControllerB playerControllerInstance;
-        static readonly string[] controlTips = { "Punch : [LMB]", "Slap : [RMB]" };
-        static string[] defaultControlTips = { "Walk : [W/A/S/D]", "Sprint: [Shift]", "Scan : [RMB]" };
+        static readonly string[] controlTips = { "Punch : [LMB]", "Punch but right : [RMB]" };
+
 
         void Awake()
         {
@@ -46,8 +44,10 @@ namespace LethalHands
 
 
         public void SquareUpPerformed(InputAction.CallbackContext context) {
-            manualLogSource.LogInfo("Square up performed");
-            if(playerControllerInstance == null) playerControllerInstance = GameNetworkManager.Instance.localPlayerController;
+            if (playerControllerInstance == null)
+            {
+                playerControllerInstance = GameNetworkManager.Instance.localPlayerController;
+            }
             if (context.performed && !playerControllerInstance.quickMenuManager.isMenuOpen &&
                 ((playerControllerInstance.IsOwner && playerControllerInstance.isPlayerControlled && 
                 (!playerControllerInstance.IsServer || playerControllerInstance.isHostPlayerObject)) || playerControllerInstance.isTestingPlayer) &&
@@ -61,26 +61,55 @@ namespace LethalHands
             squareUpInput.SquareUpKey.performed += SquareUpPerformed;
         }
 
-        public void SquareUp(bool squareUp)
-        {
-            if (squareUp && !isSquaredUp)
+        public void SquareUp(bool squareUp) { 
+            if (squareUp && !isSquaredUp && !playerControllerInstance.inSpecialInteractAnimation)
             {
                 playerControllerInstance.DropAllHeldItemsAndSync();
                 playerControllerInstance.performingEmote = false;
                 playerControllerInstance.StopPerformingEmoteServerRpc();
                 playerControllerInstance.timeSinceStartingEmote = 0f;
                 isSquaredUp = true;
-                Console.WriteLine("Squaring up " + isSquaredUp);
+
+                IngamePlayerSettings.Instance.playerInput.actions.FindAction("ActivateItem").performed += PunchPerformed;
+                IngamePlayerSettings.Instance.playerInput.actions.FindAction("PingScan").performed += PunchButRightPerformed;
                 HUDManager.Instance.ClearControlTips();
                 HUDManager.Instance.ChangeControlTipMultiple(controlTips);
+                manualLogSource.LogInfo("Squaring up " + isSquaredUp);
             }
             else if (!squareUp && isSquaredUp)
             {
-                isSquaredUp = false;
-                Console.WriteLine("Squaring down " + isSquaredUp);
+                IngamePlayerSettings.Instance.playerInput.actions.FindAction("ActivateItem").performed -= PunchPerformed;
+                IngamePlayerSettings.Instance.playerInput.actions.FindAction("PingScan").performed -= PunchButRightPerformed;
                 HUDManager.Instance.ClearControlTips();
-                HUDManager.Instance.ChangeControlTipMultiple(defaultControlTips);
+                isSquaredUp = false;
+                manualLogSource.LogInfo("Squaring down " + isSquaredUp);
             }
+        }
+
+        public void PunchPerformed(InputAction.CallbackContext context)
+        {
+            if (context.performed && isSquaredUp)
+            {
+                Punch();
+            }
+        }
+
+        public void PunchButRightPerformed(InputAction.CallbackContext context)
+        {
+            if (context.performed && isSquaredUp)
+            {
+                PunchButRight();
+            }
+        }
+
+        public void Punch()
+        {
+            manualLogSource.LogInfo("Punching");
+        }
+
+        public void PunchButRight()
+        {
+            manualLogSource.LogInfo("Punching but right");
         }
 
         [HarmonyPatch(typeof(PlayerControllerB))]
@@ -92,13 +121,23 @@ namespace LethalHands
             {
                 LethalHands.Instance.SquareUp(false);
             }
-            
+
             [HarmonyPatch("PerformEmote")]
             [HarmonyPrefix]
             static void PrePerformEmote()
             {
                 LethalHands.Instance.SquareUp(false);
             }
-        }       
+
+            [HarmonyPatch("KillPlayer")]
+            [HarmonyPostfix]
+            static void PostKillPlayer()
+            {
+                if (playerControllerInstance.isPlayerDead)
+                {
+                    LethalHands.Instance.SquareUp(false);
+                }
+            }
+        }
     }
 }
