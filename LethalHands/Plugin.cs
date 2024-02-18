@@ -156,12 +156,16 @@ namespace LethalHands
                     (hit.point == Vector3.zero || !Physics.Linecast(playerControllerInstance.gameplayCamera.transform.position, hit.point, out hitInfo, StartOfRound.Instance.collidersAndRoomMaskAndDefault)))
                 {
                     if (hit.transform == playerControllerInstance.transform) continue; // Stop hitting yourself, (unless TZP ???)
-                    manualLogSource.LogInfo($"Hit {hit.collider.gameObject.tag}");
                     hitSomething = true;
                     Vector3 forward = playerControllerInstance.gameplayCamera.transform.forward;
-                    EnemyAICollisionDetect enemyCollision = hit.collider.GetComponent<EnemyAICollisionDetect>();
-                    manualLogSource.LogInfo($"Collider's script ${enemyCollision.mainScript.enemyType.enemyName}");
-                    enemyCollision.onlyCollideWhenGrounded = false; // magic flag that makes enemies get hit way more consistently
+                    if (hit.collider)
+                    {
+                        EnemyAICollisionDetect enemyCollision = hit.collider.GetComponent<EnemyAICollisionDetect>();
+                        if (enemyCollision != null)
+                        {
+                            enemyCollision.onlyCollideWhenGrounded = false; // magic flag that makes enemies not get hit otherwise
+                        }
+                    }
                     try
                     {
                         hittable.Hit(1, forward, playerControllerInstance, playHitSFX: true);
