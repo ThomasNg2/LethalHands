@@ -3,7 +3,12 @@ using BepInEx.Logging;
 using GameNetcodeStuff;
 using HarmonyLib;
 using LethalCompanyInputUtils.Api;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LethalHands
 {
@@ -20,17 +25,19 @@ namespace LethalHands
 
         internal static SquareUpInput squareUpInput = SquareUpInput.Instance;
         static bool isSquaredUp = false;
+        static float punchCooldown = 0f;
+        static int shovelMask = 11012424;
         static PlayerControllerB playerControllerInstance;
         static readonly string[] controlTips = { "Punch : [LMB]", "Punch but right : [RMB]" };
 
-
         void Awake()
         {
-            if(Instance == null) Instance = this;
+            if (Instance == null) Instance = this;
             manualLogSource = BepInEx.Logging.Logger.CreateLogSource(modGUID);
             manualLogSource.LogInfo("Successfully caught these hands");
             harmony.PatchAll(typeof(LethalHands));
             harmony.PatchAll(typeof(PlayerControllerBPatch));
+            harmony.PatchAll(typeof(TerminalPatch));
             SetupSquareUpCallback();
         }
 
@@ -49,7 +56,7 @@ namespace LethalHands
                 playerControllerInstance = GameNetworkManager.Instance.localPlayerController;
             }
             if (context.performed && !playerControllerInstance.quickMenuManager.isMenuOpen &&
-                ((playerControllerInstance.IsOwner && playerControllerInstance.isPlayerControlled && 
+                ((playerControllerInstance.IsOwner && playerControllerInstance.isPlayerControlled &&
                 (!playerControllerInstance.IsServer || playerControllerInstance.isHostPlayerObject)) || playerControllerInstance.isTestingPlayer) &&
                 !playerControllerInstance.inSpecialInteractAnimation && !playerControllerInstance.isTypingChat)
             {
@@ -61,7 +68,7 @@ namespace LethalHands
             squareUpInput.SquareUpKey.performed += SquareUpPerformed;
         }
 
-        public void SquareUp(bool squareUp) { 
+        public void SquareUp(bool squareUp) {
             if (squareUp && !isSquaredUp && !playerControllerInstance.inSpecialInteractAnimation)
             {
                 playerControllerInstance.DropAllHeldItemsAndSync();
@@ -88,7 +95,7 @@ namespace LethalHands
 
         public void PunchPerformed(InputAction.CallbackContext context)
         {
-            if (context.performed && isSquaredUp)
+            if (context.performed && isSquaredUp && punchCooldown <= 0f)
             {
                 Punch();
             }
@@ -96,7 +103,7 @@ namespace LethalHands
 
         public void PunchButRightPerformed(InputAction.CallbackContext context)
         {
-            if (context.performed && isSquaredUp)
+            if (context.performed && isSquaredUp && punchCooldown <= 0f)
             {
                 PunchButRight();
             }
@@ -105,19 +112,85 @@ namespace LethalHands
         public void Punch()
         {
             manualLogSource.LogInfo("Punching");
+            // Play left punch animation
+            PunchHit();
         }
 
         public void PunchButRight()
         {
             manualLogSource.LogInfo("Punching but right");
+            // Play right punch 
+            PunchHit();
+        }
+
+        public void PunchHit()
+        {
+            punchCooldown = 4f;
+            playerControllerInstance.sprintMeter = Mathf.Max(0f, playerControllerInstance.sprintMeter - 0.1f);
+
+            RaycastHit[] objectsHitByPunch = Physics.SphereCastAll(playerControllerInstance.gameplayCamera.transform.position, 0.8f, playerControllerInstance.gameplayCamera.transform.forward, 1.2f, shovelMask, QueryTriggerInteraction.Collide);
+            List<RaycastHit> objectsHitByPunchList = objectsHitByPunch.OrderBy((RaycastHit raycast) => raycast.distance).ToList();
+
+            bool hitSomething = false;
+            bool hitHittable = false;
+            int hitTerrainIndex = -1;
+            IHittable hittable;
+            RaycastHit hitInfo;
+            foreach(RaycastHit hit in objectsHitByPunchList)
+            {
+                if (hit.transform.gameObject.layer == 8 || hit.transform.gameObject.layer == 11) // terrain
+                {
+                    hitSomething = true;
+                    string hitObjectTag = hit.collider.gameObject.tag;
+                    for (int j = 0; j < StartOfRound.Instance.footstepSurfaces.Length; j++)
+                    {
+                        if (StartOfRound.Instance.footstepSurfaces[j].surfaceTag == hitObjectTag)
+                        {
+                            manualLogSource.LogInfo($"Hit {hitObjectTag}");
+                            hitTerrainIndex = j;
+                            break;
+                        }
+                    }
+                }
+                else if (hit.transform.TryGetComponent<IHittable>(out hittable) &&
+                    (hit.point == Vector3.zero || !Physics.Linecast(playerControllerInstance.gameplayCamera.transform.position, hit.point, out hitInfo, StartOfRound.Instance.collidersAndRoomMaskAndDefault)))
+                {
+                    if (hit.transform == playerControllerInstance.transform) continue; // Stop hitting yourself, (unless TZP ???)
+                    manualLogSource.LogInfo($"Hit {hit.collider.gameObject.tag}");
+                    hitSomething = true;
+                    Vector3 forward = playerControllerInstance.gameplayCamera.transform.forward;
+                    EnemyAICollisionDetect enemyCollision = hit.collider.GetComponent<EnemyAICollisionDetect>();
+                    manualLogSource.LogInfo($"Collider's script ${enemyCollision.mainScript.enemyType.enemyName}");
+                    enemyCollision.onlyCollideWhenGrounded = false; // magic flag that makes enemies get hit way more consistently
+                    try
+                    {
+                        hittable.Hit(1, forward, playerControllerInstance, playHitSFX: true);
+                        hitHittable = true;
+                    }
+                    catch (Exception e)
+                    {
+                        manualLogSource.LogError($"Exception when punching {e}");
+                    }
+                    break;
+                }
+            }
+            if (hitSomething)
+            {
+                if(!hitHittable && hitTerrainIndex != -1) {
+                
+                    // Play audio
+                    // RPC to play sounds
+                }
+
+            }
         }
 
         [HarmonyPatch(typeof(PlayerControllerB))]
         internal class PlayerControllerBPatch
         {
-            [HarmonyPatch("BeginGrabObject")]
+            [HarmonyPatch("GrabObject")]
             [HarmonyPrefix]
-            static void PreBeginGrabObject()
+            static void PreGrabObject()
             {
                 LethalHands.Instance.SquareUp(false);
             }
@@ -137,6 +210,27 @@ namespace LethalHands
                 {
                     LethalHands.Instance.SquareUp(false);
                 }
+            }
+
+            [HarmonyPatch("Update")]
+            [HarmonyPostfix]
+            static void PostUpdate()
+            {
+                if (punchCooldown > 0f)
+                {
+                    punchCooldown -= Time.deltaTime;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(Terminal))]
+        internal class TerminalPatch
+        {
+            [HarmonyPatch("BeginUsingTerminal")]
+            [HarmonyPrefix]
+            static void PreBeginUsingTerminal()
+            {
+                LethalHands.Instance.SquareUp(false);
             }
         }
     }
