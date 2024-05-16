@@ -94,14 +94,14 @@ namespace LethalHands
         public void Punch()
         {
             LethalHandsPlugin.Instance.manualLogSource.LogInfo("Punching");
-            // Play left punch animation
+            CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__lpunch");
             PunchThrow();
         }
 
         public void PunchButRight()
         {
             LethalHandsPlugin.Instance.manualLogSource.LogInfo("Punching but right");
-            // Play right punch 
+            CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__rpunch");
             PunchThrow();
         }
 

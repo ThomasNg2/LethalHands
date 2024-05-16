@@ -25,6 +25,7 @@ namespace LethalHands
                 soloBonesToIgnore = ignoredSoloBones,
                 useLocalTransforms = true
             };
+
             CustomEmoteParams squareDownParams = new CustomEmoteParams
             {
                 primaryAnimationClips = [Assets.Load<AnimationClip>("squaredown.anim")],
@@ -39,8 +40,43 @@ namespace LethalHands
                 soloBonesToIgnore = ignoredSoloBones,
                 useLocalTransforms = true
             };
+
+            CustomEmoteParams LPunchParams = new CustomEmoteParams
+            {
+                primaryAnimationClips = [Assets.Load<AnimationClip>("lpunch.anim")],
+                secondaryAnimationClips = [Assets.Load<AnimationClip>("squaredupidle.anim")],
+                visible = false,
+                audioLevel = 0,
+                audioLoops = false,
+                allowJoining = false,
+                thirdPerson = false,
+                displayName = " ",
+                internalName = "lpunch",
+                rootBonesToIgnore = ignoredRootBones,
+                soloBonesToIgnore = ignoredSoloBones,
+                useLocalTransforms = true
+            };
+
+            CustomEmoteParams RPunchParams = new CustomEmoteParams
+            {
+                primaryAnimationClips = [Assets.Load<AnimationClip>("rpunch.anim")],
+                secondaryAnimationClips = [Assets.Load<AnimationClip>("squaredupidle.anim")],
+                visible = false,
+                audioLevel = 0,
+                audioLoops = false,
+                allowJoining = false,
+                thirdPerson = false,
+                displayName = " ",
+                internalName = "rpunch",
+                rootBonesToIgnore = ignoredRootBones,
+                soloBonesToIgnore = ignoredSoloBones,
+                useLocalTransforms = true
+            };
+
             EmoteImporter.ImportEmote(squareUpParams);
             EmoteImporter.ImportEmote(squareDownParams);
+            EmoteImporter.ImportEmote(LPunchParams);
+            EmoteImporter.ImportEmote(RPunchParams);
         }
     }
 }
