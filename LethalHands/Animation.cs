@@ -13,27 +13,14 @@ namespace LethalHands
             CustomEmoteParams squareUpParams = new CustomEmoteParams
             {
                 primaryAnimationClips = [Assets.Load<AnimationClip>("squareup.anim")],
+                secondaryAnimationClips = [Assets.Load<AnimationClip>("squaredupidle.anim")],
                 visible = false,
                 audioLevel = 0,
                 audioLoops = false,
                 allowJoining = false,
                 thirdPerson = false,
-                displayName = "squareup",
+                displayName = " ",
                 internalName = "squareup",
-                rootBonesToIgnore = ignoredRootBones,
-                soloBonesToIgnore = ignoredSoloBones,
-                useLocalTransforms = true
-            };
-            CustomEmoteParams squaredUpIdleParams = new CustomEmoteParams
-            {
-                primaryAnimationClips = [Assets.Load<AnimationClip>("squaredupidle.anim")],
-                visible = false,
-                audioLevel = 0,
-                audioLoops = false,
-                allowJoining = false,
-                thirdPerson = false,
-                displayName = "squaredupidle",
-                internalName = "squaredupidle",
                 rootBonesToIgnore = ignoredRootBones,
                 soloBonesToIgnore = ignoredSoloBones,
                 useLocalTransforms = true
@@ -46,14 +33,13 @@ namespace LethalHands
                 audioLoops = false,
                 allowJoining = false,
                 thirdPerson = false,
-                displayName = "squaredown",
+                displayName = " ",
                 internalName = "squaredown",
                 rootBonesToIgnore = ignoredRootBones,
                 soloBonesToIgnore = ignoredSoloBones,
                 useLocalTransforms = true
             };
             EmoteImporter.ImportEmote(squareUpParams);
-            EmoteImporter.ImportEmote(squaredUpIdleParams);
             EmoteImporter.ImportEmote(squareDownParams);
         }
     }

@@ -69,7 +69,7 @@ namespace LethalHands
                 playerControllerInstance.StopPerformingEmoteServerRpc();
                 playerControllerInstance.timeSinceStartingEmote = 0f;
                 isSquaredUp = true;
-                CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__squaredupidle");
+                CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__squareup");
                 IngamePlayerSettings.Instance.playerInput.actions.FindAction("ActivateItem").performed += PunchPerformed;
                 IngamePlayerSettings.Instance.playerInput.actions.FindAction("PingScan").performed += PunchButRightPerformed;
                 HUDManager.Instance.ClearControlTips();
@@ -84,7 +84,7 @@ namespace LethalHands
             {
                 IngamePlayerSettings.Instance.playerInput.actions.FindAction("ActivateItem").performed -= PunchPerformed;
                 IngamePlayerSettings.Instance.playerInput.actions.FindAction("PingScan").performed -= PunchButRightPerformed;
-                CustomEmotesAPI.PlayAnimation("none");
+                CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__squaredown");
                 HUDManager.Instance.ClearControlTips();
                 isSquaredUp = false;
                 LethalHandsPlugin.Instance.manualLogSource.LogInfo("Squaring down " + isSquaredUp);
