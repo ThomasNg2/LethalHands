@@ -1,4 +1,5 @@
-﻿using GameNetcodeStuff;
+﻿using EmotesAPI;
+using GameNetcodeStuff;
 using HarmonyLib;
 using UnityEngine;
 
@@ -11,23 +12,23 @@ namespace LethalHands.Patches
         [HarmonyPrefix]
         static void PreGrabObject()
         {
-            LethalHands.Instance.SquareUp(false);
+            LethalHandsPlugin.Instance.lethalHands.SquareDown();
         }
 
         [HarmonyPatch("PerformEmote")]
         [HarmonyPrefix]
         static void PrePerformEmote()
         {
-            LethalHands.Instance.SquareUp(false);
+            LethalHandsPlugin.Instance.lethalHands.SquareDown();
         }
 
         [HarmonyPatch("KillPlayer")]
         [HarmonyPostfix]
         static void PostKillPlayer()
         {
-            if (LethalHands.playerControllerInstance.isPlayerDead)
+            if (LethalHandsPlugin.Instance.lethalHands.playerControllerInstance.isPlayerDead)
             {
-                LethalHands.Instance.SquareUp(false);
+                LethalHandsPlugin.Instance.lethalHands.SquareDown();
             }
         }
 
@@ -35,9 +36,9 @@ namespace LethalHands.Patches
         [HarmonyPostfix]
         static void PostUpdate()
         {
-            if (LethalHands.punchCooldown > 0f)
+            if (LethalHandsPlugin.Instance.lethalHands.punchCooldown > 0f)
             {
-                LethalHands.punchCooldown -= Time.deltaTime;
+                LethalHandsPlugin.Instance.lethalHands.punchCooldown -= Time.deltaTime;
             }
         }
     }

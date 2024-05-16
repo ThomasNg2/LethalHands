@@ -14,7 +14,7 @@ namespace LethalHands.Patches
         [HarmonyPrefix]
         static void PreBeginUsingTerminal()
         {
-            LethalHands.Instance.SquareUp(false);
+            LethalHandsPlugin.Instance.lethalHands.SquareDown();
         }
     }
 }
