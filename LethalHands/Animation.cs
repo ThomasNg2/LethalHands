@@ -45,6 +45,7 @@ namespace LethalHands
             {
                 primaryAnimationClips = [Assets.Load<AnimationClip>("lpunch.anim")],
                 secondaryAnimationClips = [Assets.Load<AnimationClip>("squaredupidle.anim")],
+                primaryAudioClips = [Assets.Load<AudioClip>("swing1.ogg"), Assets.Load<AudioClip>("swing2.ogg")],
                 visible = false,
                 audioLevel = 0,
                 audioLoops = false,
@@ -61,6 +62,7 @@ namespace LethalHands
             {
                 primaryAnimationClips = [Assets.Load<AnimationClip>("rpunch.anim")],
                 secondaryAnimationClips = [Assets.Load<AnimationClip>("squaredupidle.anim")],
+                primaryAudioClips = [Assets.Load<AudioClip>("swing1.ogg"), Assets.Load<AudioClip>("swing2.ogg")],
                 visible = false,
                 audioLevel = 0,
                 audioLoops = false,
