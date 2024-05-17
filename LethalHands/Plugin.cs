@@ -27,9 +27,9 @@ namespace LethalHands
             harmony.PatchAll(typeof(LethalHandsPlugin));
             harmony.PatchAll(typeof(Patches.PlayerControllerBPatch));
             harmony.PatchAll(typeof(Patches.TerminalPatch));
+            Assets.LoadAssetBundlesFromFolder("assetbundles");
             lethalHands = new LethalHands();
             lethalHands.Awake();
-            Assets.LoadAssetBundlesFromFolder("assetbundles");
             Animation.instantiateAnimations();
         }
     }

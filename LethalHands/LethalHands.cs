@@ -16,17 +16,25 @@ namespace LethalHands
         static int shovelMask = 11012424;
         public PlayerControllerB playerControllerInstance;
         static readonly string[] controlTips = { "Punch : [LMB]", "Punch but right : [RMB]" };
+        AudioClip[] hitSounds = new AudioClip[2];
+        AudioSource handsAudio;
 
         public void Awake()
         {
             Input.SquareUpInput.Instance.SquareUpKey.performed += SquareUpPerformed;
+            hitSounds[0] = Assets.Load<AudioClip>("hit1.ogg");
+            hitSounds[1] = Assets.Load<AudioClip>("hit2.ogg");
         }
 
         public void SquareUpPerformed(InputAction.CallbackContext context)
         {
             if (playerControllerInstance == null)
             {
-                playerControllerInstance = GameNetworkManager.Instance.localPlayerController;
+                if (GameNetworkManager.Instance.localPlayerController != null) {
+                    playerControllerInstance = GameNetworkManager.Instance.localPlayerController;
+                    handsAudio = playerControllerInstance.gameObject.AddComponent<AudioSource>();
+                }
+                else return;
             }
             if (context.performed && !playerControllerInstance.quickMenuManager.isMenuOpen &&
                 ((playerControllerInstance.IsOwner && playerControllerInstance.isPlayerControlled &&
@@ -116,7 +124,6 @@ namespace LethalHands
             List<RaycastHit> objectsHitByPunchList = objectsHitByPunch.OrderBy((RaycastHit raycast) => raycast.distance).ToList();
 
             bool hitSomething = false;
-            bool hitHittable = false;
             int hitTerrainIndex = -1;
             IHittable hittable;
             RaycastHit hitInfo;
@@ -153,7 +160,6 @@ namespace LethalHands
                     try
                     {
                         hittable.Hit(1, forward, playerControllerInstance, playHitSFX: true);
-                        hitHittable = true;
                     }
                     catch (Exception e)
                     {
@@ -164,13 +170,12 @@ namespace LethalHands
             }
             if (hitSomething)
             {
-                if (!hitHittable && hitTerrainIndex != -1)
-                {
-
-                    // Play audio
-                    // RPC to play sounds
-                }
-
+                int randomIndex = UnityEngine.Random.Range(0, 2);
+                handsAudio.PlayOneShot(hitSounds[randomIndex]);
+                //RoundManager.PlayRandomClip(playerControllerInstance.movementAudio, hitSounds);
+                //UnityEngine.Object.FindObjectOfType<RoundManager>().PlayAudibleNoise(playerControllerInstance.transform.position, 10f, 0.5f);
+                //WalkieTalkie.TransmitOneShotAudio(playerControllerInstance.movementAudio, hitSounds[randomIndex]);
+                //RPC
             }
         }
     }
