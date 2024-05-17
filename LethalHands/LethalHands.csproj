@@ -99,6 +99,7 @@
     <Compile Include="Input.cs" />
     <Compile Include="LethalHands.cs" />
     <Compile Include="Patches\PlayerControllerBPatch.cs" />
+    <Compile Include="Patches\StartMatchLeverPatch.cs" />
     <Compile Include="Patches\TerminalPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
