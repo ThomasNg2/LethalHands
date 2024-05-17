@@ -17,7 +17,6 @@ namespace LethalHands
         public PlayerControllerB playerControllerInstance;
         static readonly string[] controlTips = { "Punch : [LMB]", "Punch but right : [RMB]" };
         AudioClip[] hitSounds = new AudioClip[2];
-        AudioSource handsAudio;
 
         public void Awake()
         {
@@ -32,7 +31,6 @@ namespace LethalHands
             {
                 if (GameNetworkManager.Instance.localPlayerController != null) {
                     playerControllerInstance = GameNetworkManager.Instance.localPlayerController;
-                    handsAudio = playerControllerInstance.gameObject.AddComponent<AudioSource>();
                 }
                 else return;
             }
@@ -171,10 +169,10 @@ namespace LethalHands
             if (hitSomething)
             {
                 int randomIndex = UnityEngine.Random.Range(0, 2);
-                handsAudio.PlayOneShot(hitSounds[randomIndex]);
-                //RoundManager.PlayRandomClip(playerControllerInstance.movementAudio, hitSounds);
-                //UnityEngine.Object.FindObjectOfType<RoundManager>().PlayAudibleNoise(playerControllerInstance.transform.position, 10f, 0.5f);
-                //WalkieTalkie.TransmitOneShotAudio(playerControllerInstance.movementAudio, hitSounds[randomIndex]);
+                playerControllerInstance.movementAudio.PlayOneShot(hitSounds[randomIndex]);
+                RoundManager.PlayRandomClip(playerControllerInstance.movementAudio, hitSounds);
+                UnityEngine.Object.FindObjectOfType<RoundManager>().PlayAudibleNoise(playerControllerInstance.transform.position, 10f, 0.5f);
+                WalkieTalkie.TransmitOneShotAudio(playerControllerInstance.movementAudio, hitSounds[randomIndex]);
                 //RPC
             }
         }
