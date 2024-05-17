@@ -35,7 +35,7 @@ namespace LethalHands
             {
                 if(isSquaredUp)
                 {
-                    SquareDown();
+                    SquareDown(true);
                 }
                 else
                 {
@@ -78,13 +78,14 @@ namespace LethalHands
             }
         }
 
-        public void SquareDown()
+        public void SquareDown(bool animate)
         {
             if (isSquaredUp)
             {
                 IngamePlayerSettings.Instance.playerInput.actions.FindAction("ActivateItem").performed -= PunchPerformed;
                 IngamePlayerSettings.Instance.playerInput.actions.FindAction("PingScan").performed -= PunchButRightPerformed;
-                CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__squaredown");
+                if (animate) CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__squaredown");
+                else CustomEmotesAPI.PlayAnimation("none");
                 HUDManager.Instance.ClearControlTips();
                 isSquaredUp = false;
                 LethalHandsPlugin.Instance.manualLogSource.LogInfo("Squaring down " + isSquaredUp);

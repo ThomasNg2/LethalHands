@@ -12,14 +12,14 @@ namespace LethalHands.Patches
         [HarmonyPrefix]
         static void PreGrabObject()
         {
-            LethalHandsPlugin.Instance.lethalHands.SquareDown();
+            LethalHandsPlugin.Instance.lethalHands.SquareDown(false);
         }
 
         [HarmonyPatch("PerformEmote")]
         [HarmonyPrefix]
         static void PrePerformEmote()
         {
-            LethalHandsPlugin.Instance.lethalHands.SquareDown();
+            LethalHandsPlugin.Instance.lethalHands.SquareDown(false);
         }
 
         [HarmonyPatch("KillPlayer")]
@@ -28,7 +28,7 @@ namespace LethalHands.Patches
         {
             if (LethalHandsPlugin.Instance.lethalHands.playerControllerInstance.isPlayerDead)
             {
-                LethalHandsPlugin.Instance.lethalHands.SquareDown();
+                LethalHandsPlugin.Instance.lethalHands.SquareDown(false);
             }
         }
 
