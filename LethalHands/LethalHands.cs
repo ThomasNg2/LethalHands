@@ -18,7 +18,7 @@ namespace LethalHands
         AudioClip[] hitSounds = new AudioClip[2];
 
         const float PUNCH_DELAY = 4f;
-        const float PUNCH_RANGE = 1f; // Shovel : 1.5, Knife : 0.75
+        const float PUNCH_RANGE = 0.9f; // Shovel : 1.5, Knife : 0.75
 
 
         public void Awake()
