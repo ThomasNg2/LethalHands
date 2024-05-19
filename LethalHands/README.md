@@ -20,6 +20,7 @@ In terms of configuration we have no configuration
 ### Credits
 
 - [Gemumoddo](https://thunderstore.io/c/lethal-company/p/Gemumoddo/) : For greatly reducing the brain damage induced by the animation part of this mod with their [API](https://thunderstore.io/c/lethal-company/p/Gemumoddo/LethalEmotesAPI)
+- Sounds from TF2
 
 ### Feedback
 
