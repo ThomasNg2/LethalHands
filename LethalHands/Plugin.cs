@@ -1,12 +1,16 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
+using EmotesAPI;
 using HarmonyLib;
+using LethalCompanyInputUtils;
 using System.Reflection;
 using UnityEngine;
 
 namespace LethalHands
 {
     [BepInPlugin(modGUID, modName, modVersion)]
+    [BepInDependency(CustomEmotesAPI.PluginGUID, BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency(LethalCompanyInputUtilsPlugin.ModId, BepInDependency.DependencyFlags.HardDependency)]
     public class LethalHandsPlugin : BaseUnityPlugin
     {
         private const string modGUID = "SlapitNow.LethalHands";
@@ -42,7 +46,6 @@ namespace LethalHands
             Instance = this;
             PInfo = ((BaseUnityPlugin)this).Info;
             manualLogSource = BepInEx.Logging.Logger.CreateLogSource(modGUID);
-            manualLogSource.LogInfo("Successfully caught these hands");
             Assets.LoadAssetBundlesFromFolder("assetbundles");
             harmony.PatchAll(typeof(LethalHandsPlugin));
             harmony.PatchAll(typeof(Patches.PlayerControllerBPatch));
@@ -53,6 +56,7 @@ namespace LethalHands
             lethalHands.Awake();
             Animation.instantiateAnimations();
             NetcodePatcher();
+            manualLogSource.LogInfo("Successfully caught these hands");
         }
     }
 }

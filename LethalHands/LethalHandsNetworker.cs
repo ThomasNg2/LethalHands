@@ -20,9 +20,15 @@ namespace LethalHands
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void PunchHitServerRpc(IHittable target, Vector3 hitDirection, PlayerControllerB source)
+        public void PunchHitSoundServerRpc(int playerID, int soundIndex)
         {
-            target.Hit(1, hitDirection, playerWhoHit: source, playHitSFX: true);
+            PunchHitSoundClientRpc(playerID, soundIndex);
+        }
+
+        [ClientRpc]
+        public void PunchHitSoundClientRpc(int playerID, int soundIndex)
+        {
+            LethalHands.Instance.PunchHitSound(playerID, soundIndex);
         }
     }
 }

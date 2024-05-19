@@ -19,10 +19,12 @@ namespace LethalHands
 
         const float PUNCH_DELAY = 4f;
         const float PUNCH_RANGE = 0.9f; // Shovel : 1.5, Knife : 0.75
+        const float CHANCE_TO_DEAL_DMG_TO_MONSTER = 0.5f;
 
 
         public void Awake()
         {
+            Instance = this;
             Input.SquareUpInput.Instance.SquareUpKey.performed += SquareUpPerformed;
             hitSounds[0] = Assets.Load<AudioClip>("hit1.ogg");
             hitSounds[1] = Assets.Load<AudioClip>("hit2.ogg");
@@ -160,7 +162,8 @@ namespace LethalHands
                     }
                     try
                     {
-                        LethalHandsNetworker.Instance.PunchHitServerRpc(hittable, forward, playerControllerInstance);
+                        int damage = UnityEngine.Random.Range(0f, 1f) < CHANCE_TO_DEAL_DMG_TO_MONSTER ? 1 : 0;
+                        hittable.Hit(damage, forward, playerWhoHit: playerControllerInstance, playHitSFX: true);
                     } catch { }
                     break;
                 }
@@ -168,12 +171,30 @@ namespace LethalHands
             if (hitSomething)
             {
                 int randomIndex = UnityEngine.Random.Range(0, hitSounds.Length);
-                playerControllerInstance.movementAudio.PlayOneShot(hitSounds[randomIndex]);
+                LethalHandsNetworker.Instance.PunchHitSoundServerRpc((int)playerControllerInstance.playerClientId, randomIndex);
                 RoundManager.PlayRandomClip(playerControllerInstance.movementAudio, hitSounds);
                 UnityEngine.Object.FindObjectOfType<RoundManager>().PlayAudibleNoise(playerControllerInstance.transform.position, 10f, 0.5f);
-                WalkieTalkie.TransmitOneShotAudio(playerControllerInstance.movementAudio, hitSounds[randomIndex]);
-                //RPC
             }
+        }
+
+        public void PunchHitSound(int playerID, int soundIndex)
+        {
+            try
+            {
+                AudioSource sauce = StartOfRound.Instance.allPlayerScripts[playerID].movementAudio;
+                try
+                {
+                    sauce.PlayOneShot(hitSounds[soundIndex]);
+                    try
+                    {
+                        WalkieTalkie.TransmitOneShotAudio(sauce, hitSounds[soundIndex]);
+                    }
+                    catch (System.Exception e) { LethalHandsPlugin.Instance.manualLogSource.LogInfo($"Error on line 3 {e}"); }
+                }
+                catch (System.Exception e) { LethalHandsPlugin.Instance.manualLogSource.LogInfo($"Error on line 2 {e}"); }
+            }
+            catch (System.Exception e) { LethalHandsPlugin.Instance.manualLogSource.LogInfo($"Error on line 1 {e}"); }
+            LethalHandsPlugin.Instance.manualLogSource.LogInfo($"Punch hit sound {playerID} {soundIndex}");
         }
     }
 }
