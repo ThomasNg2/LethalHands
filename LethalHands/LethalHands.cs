@@ -2,14 +2,12 @@
 using GameNetcodeStuff;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.Netcode;
 
 namespace LethalHands
 {
-    public class LethalHands : NetworkBehaviour
+    public class LethalHands
     {
         public static LethalHands Instance { get; private set; } 
         public bool isSquaredUp = false;
@@ -20,7 +18,7 @@ namespace LethalHands
         AudioClip[] hitSounds = new AudioClip[2];
 
         const float PUNCH_DELAY = 4f;
-        const float PUNCH_RANGE = 1.2f; // Shovel : 1.5, Knife : 0.75
+        const float PUNCH_RANGE = 1f; // Shovel : 1.5, Knife : 0.75
 
 
         public void Awake()
@@ -162,7 +160,7 @@ namespace LethalHands
                     }
                     try
                     {
-                        hittable.Hit(1, forward, playerControllerInstance, playHitSFX: true);
+                        LethalHandsNetworker.Instance.PunchHitServerRpc(hittable, forward, playerControllerInstance);
                     } catch { }
                     break;
                 }

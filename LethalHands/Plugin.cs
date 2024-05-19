@@ -1,6 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using System.Reflection;
+using UnityEngine;
 
 namespace LethalHands
 {
@@ -18,20 +20,39 @@ namespace LethalHands
 
         public static PluginInfo PInfo { get; private set; }
 
+        private static void NetcodePatcher()
+        {
+            var types = Assembly.GetExecutingAssembly().GetTypes();
+            foreach (var type in types)
+            {
+                var methods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+                foreach (var method in methods)
+                {
+                    var attributes = method.GetCustomAttributes(typeof(RuntimeInitializeOnLoadMethodAttribute), false);
+                    if (attributes.Length > 0)
+                    {
+                        method.Invoke(null, null);
+                    }
+                }
+            }
+        }
+
         void Awake()
         {
             Instance = this;
             PInfo = ((BaseUnityPlugin)this).Info;
             manualLogSource = BepInEx.Logging.Logger.CreateLogSource(modGUID);
             manualLogSource.LogInfo("Successfully caught these hands");
+            Assets.LoadAssetBundlesFromFolder("assetbundles");
             harmony.PatchAll(typeof(LethalHandsPlugin));
             harmony.PatchAll(typeof(Patches.PlayerControllerBPatch));
             harmony.PatchAll(typeof(Patches.TerminalPatch));
             harmony.PatchAll(typeof(Patches.StartMatchLeverPatch));
-            Assets.LoadAssetBundlesFromFolder("assetbundles");
+            harmony.PatchAll(typeof(Patches.NetworkingPatches));
             lethalHands = new LethalHands();
             lethalHands.Awake();
             Animation.instantiateAnimations();
+            NetcodePatcher();
         }
     }
 }
