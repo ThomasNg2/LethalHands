@@ -5,18 +5,23 @@ using System.Linq;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
+using Unity.Netcode;
 
 namespace LethalHands
 {
-    public class LethalHands
+    public class LethalHands : NetworkBehaviour
     {
+        public static LethalHands Instance { get; private set; } 
         public bool isSquaredUp = false;
         public float punchCooldown = 0f;
         static int shovelMask = 11012424;
         public PlayerControllerB playerControllerInstance;
         static readonly string[] controlTips = { "Punch : [LMB]", "Punch but right : [RMB]" };
         AudioClip[] hitSounds = new AudioClip[2];
+
+        const float PUNCH_DELAY = 4f;
+        const float PUNCH_RANGE = 1.2f; // Shovel : 1.5, Knife : 0.75
+
 
         public void Awake()
         {
@@ -115,10 +120,10 @@ namespace LethalHands
         // our shovel code
         public void PunchThrow()
         {
-            punchCooldown = 4f;
+            punchCooldown = PUNCH_DELAY;
             playerControllerInstance.sprintMeter = Mathf.Max(0f, playerControllerInstance.sprintMeter - 0.1f);
 
-            RaycastHit[] objectsHitByPunch = Physics.SphereCastAll(playerControllerInstance.gameplayCamera.transform.position, 0.8f, playerControllerInstance.gameplayCamera.transform.forward, 1.2f, shovelMask, QueryTriggerInteraction.Collide);
+            RaycastHit[] objectsHitByPunch = Physics.SphereCastAll(playerControllerInstance.gameplayCamera.transform.position, 0.8f, playerControllerInstance.gameplayCamera.transform.forward, PUNCH_RANGE, shovelMask, QueryTriggerInteraction.Collide);
             List<RaycastHit> objectsHitByPunchList = objectsHitByPunch.OrderBy((RaycastHit raycast) => raycast.distance).ToList();
 
             bool hitSomething = false;
@@ -158,17 +163,13 @@ namespace LethalHands
                     try
                     {
                         hittable.Hit(1, forward, playerControllerInstance, playHitSFX: true);
-                    }
-                    catch (Exception e)
-                    {
-                        LethalHandsPlugin.Instance.manualLogSource.LogError($"Exception when punching {e}");
-                    }
+                    } catch { }
                     break;
                 }
             }
             if (hitSomething)
             {
-                int randomIndex = UnityEngine.Random.Range(0, 2);
+                int randomIndex = UnityEngine.Random.Range(0, hitSounds.Length);
                 playerControllerInstance.movementAudio.PlayOneShot(hitSounds[randomIndex]);
                 RoundManager.PlayRandomClip(playerControllerInstance.movementAudio, hitSounds);
                 UnityEngine.Object.FindObjectOfType<RoundManager>().PlayAudibleNoise(playerControllerInstance.transform.position, 10f, 0.5f);
