@@ -1,4 +1,4 @@
-﻿# LethalHands
+# LethalHands
 
 Allows the usage of your hands to fight back in dire situations.
 
@@ -25,6 +25,3 @@ In terms of configuration we have no configuration
 ### Feedback
 
 Throw your suggestions/complaints/bugs on the [GitHub](https://github.com/ThomasNg2/LethalHands) or directly at me on Discord (dooglett)
-
-
-
