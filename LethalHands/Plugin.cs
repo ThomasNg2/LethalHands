@@ -51,6 +51,7 @@ namespace LethalHands
             harmony.PatchAll(typeof(Patches.PlayerControllerBPatch));
             harmony.PatchAll(typeof(Patches.TerminalPatch));
             harmony.PatchAll(typeof(Patches.StartMatchLeverPatch));
+            harmony.PatchAll(typeof(Patches.HudManagerPatch));
             harmony.PatchAll(typeof(Patches.NetworkingPatches));
             lethalHands = new LethalHands();
             lethalHands.Awake();

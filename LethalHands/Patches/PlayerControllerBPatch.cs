@@ -1,5 +1,4 @@
-﻿using EmotesAPI;
-using GameNetcodeStuff;
+﻿using GameNetcodeStuff;
 using HarmonyLib;
 using UnityEngine;
 
