@@ -179,22 +179,9 @@ namespace LethalHands
 
         public void PunchHitSound(int playerID, int soundIndex)
         {
-            try
-            {
-                AudioSource sauce = StartOfRound.Instance.allPlayerScripts[playerID].movementAudio;
-                try
-                {
-                    sauce.PlayOneShot(hitSounds[soundIndex]);
-                    try
-                    {
-                        WalkieTalkie.TransmitOneShotAudio(sauce, hitSounds[soundIndex]);
-                    }
-                    catch (System.Exception e) { LethalHandsPlugin.Instance.manualLogSource.LogInfo($"Error on line 3 {e}"); }
-                }
-                catch (System.Exception e) { LethalHandsPlugin.Instance.manualLogSource.LogInfo($"Error on line 2 {e}"); }
-            }
-            catch (System.Exception e) { LethalHandsPlugin.Instance.manualLogSource.LogInfo($"Error on line 1 {e}"); }
-            LethalHandsPlugin.Instance.manualLogSource.LogInfo($"Punch hit sound {playerID} {soundIndex}");
+            AudioSource sauce = StartOfRound.Instance.allPlayerScripts[playerID].movementAudio;
+            sauce.PlayOneShot(hitSounds[soundIndex]);
+            WalkieTalkie.TransmitOneShotAudio(sauce, hitSounds[soundIndex]);
         }
     }
 }
