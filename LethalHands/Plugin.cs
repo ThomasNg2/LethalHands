@@ -58,6 +58,8 @@ namespace LethalHands
             Animation.instantiateAnimations();
             NetcodePatcher();
             manualLogSource.LogInfo("Successfully caught these hands");
+            EmotesAPI.Settings.thirdPersonType.Value = ThirdPersonType.Normal;
+            manualLogSource.LogInfo("LethalEmotesAPI 3rd person mode overwritten to Normal");
         }
     }
 }
