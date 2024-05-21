@@ -1,3 +1,6 @@
+### v22.0.3 :
+	- Fixed being able to punch while being killed by a masked
+
 ### v22.0.2 :
 	- Disabled scanning while squared up
 

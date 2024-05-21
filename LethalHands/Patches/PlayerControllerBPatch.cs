@@ -31,6 +31,13 @@ namespace LethalHands.Patches
             }
         }
 
+        [HarmonyPatch("CancelSpecialTriggerAnimations")]
+        [HarmonyPrefix]
+        static void PreCancelSpecialTriggerAnimations()
+        {
+            LethalHandsPlugin.Instance.lethalHands.SquareDown(false);
+        }
+
         [HarmonyPatch("Update")]
         [HarmonyPostfix]
         static void PostUpdate()
