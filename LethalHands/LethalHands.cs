@@ -17,9 +17,11 @@ namespace LethalHands
         static readonly string[] controlTips = { "Left Punch : [Left Click]", "Right Punch : [Right Click]" };
         AudioClip[] hitSounds = new AudioClip[2];
 
-        const float PUNCH_DELAY = 4f;
-        const float PUNCH_RANGE = 0.9f; // Shovel : 1.5, Knife : 0.75
-        const float CHANCE_TO_DEAL_DMG_TO_MONSTER = 0.5f;
+        float punchRange = NetworkConfig.Default.punchRange; // Shovel : 1.5, Knife : 0.75
+        float punchDelay = NetworkConfig.Default.punchCooldown * 4;
+        int punchDamage = NetworkConfig.Default.punchDamage;
+        float chanceToDealDmgToMonsters = 0.01f * NetworkConfig.Default.chanceToDealDamage;
+        float staminaDrain = NetworkConfig.Default.staminaDrain * 0.01f;
 
 
         public void Awake()
@@ -28,6 +30,16 @@ namespace LethalHands
             Input.SquareUpInput.Instance.SquareUpKey.performed += SquareUpPerformed;
             hitSounds[0] = Assets.Load<AudioClip>("hit1.ogg");
             hitSounds[1] = Assets.Load<AudioClip>("hit2.ogg");
+        }
+
+        public void LoadConfigValues()
+        {
+            LethalHandsPlugin.Instance.manualLogSource.LogInfo($"New config values : {NetworkConfig.Instance.punchRange} {NetworkConfig.Instance.punchCooldown} {NetworkConfig.Instance.staminaDrain} {NetworkConfig.Instance.chanceToDealDamage} {NetworkConfig.Instance.punchDamage}");
+            punchRange = NetworkConfig.Instance.punchRange;
+            punchDelay = NetworkConfig.Instance.punchCooldown * 4;
+            punchDamage = NetworkConfig.Instance.punchDamage;
+            chanceToDealDmgToMonsters = 0.01f * NetworkConfig.Instance.chanceToDealDamage;
+            staminaDrain = NetworkConfig.Instance.staminaDrain * 0.01f;
         }
 
         public void SquareUpPerformed(InputAction.CallbackContext context)
@@ -120,10 +132,10 @@ namespace LethalHands
         // our shovel code
         public void PunchThrow()
         {
-            punchCooldown = PUNCH_DELAY;
-            playerControllerInstance.sprintMeter = Mathf.Max(0f, playerControllerInstance.sprintMeter - 0.1f);
+            punchCooldown = punchDelay;
+            playerControllerInstance.sprintMeter = Mathf.Max(0f, playerControllerInstance.sprintMeter - staminaDrain);
 
-            RaycastHit[] objectsHitByPunch = Physics.SphereCastAll(playerControllerInstance.gameplayCamera.transform.position, 0.8f, playerControllerInstance.gameplayCamera.transform.forward, PUNCH_RANGE, shovelMask, QueryTriggerInteraction.Collide);
+            RaycastHit[] objectsHitByPunch = Physics.SphereCastAll(playerControllerInstance.gameplayCamera.transform.position, 0.8f, playerControllerInstance.gameplayCamera.transform.forward, punchRange, shovelMask, QueryTriggerInteraction.Collide);
             List<RaycastHit> objectsHitByPunchList = objectsHitByPunch.OrderBy((RaycastHit raycast) => raycast.distance).ToList();
 
             bool hitSomething = false;
@@ -162,7 +174,7 @@ namespace LethalHands
                     }
                     try
                     {
-                        int damage = UnityEngine.Random.Range(0f, 1f) < CHANCE_TO_DEAL_DMG_TO_MONSTER ? 1 : 0;
+                        int damage = UnityEngine.Random.Range(0f, 1f) <= chanceToDealDmgToMonsters ? punchDamage : 0;
                         hittable.Hit(damage, forward, playerWhoHit: playerControllerInstance, playHitSFX: true);
                     } catch { }
                     break;

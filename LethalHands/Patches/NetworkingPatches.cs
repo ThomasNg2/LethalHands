@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using GameNetcodeStuff;
+using HarmonyLib;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -28,6 +29,34 @@ namespace LethalHands.Patches
                 var lethalHandsNetworker = Object.Instantiate(networkPrefab, Vector3.zero, Quaternion.identity);
                 lethalHandsNetworker.GetComponent<NetworkObject>().Spawn();
             }
+        }
+
+        [HarmonyPatch(typeof(PlayerControllerB), "ConnectClientToPlayerObject")]
+        [HarmonyPostfix]
+        public static void InitializeLocalPlayer()
+        {
+            LethalHandsPlugin.Instance.manualLogSource.LogInfo("Player initialized, setting up config...");
+            if (NetworkConfig.IsHost)
+            {
+                NetworkConfig.MessageManager.RegisterNamedMessageHandler("SlapitNow.LethalHands_OnRequestConfigSync", NetworkConfig.OnRequestSync);
+                NetworkConfig.Synced = true;
+
+                return;
+            }
+
+            NetworkConfig.Synced = false;
+            NetworkConfig.MessageManager.RegisterNamedMessageHandler("SlapitNow.LethalHands_OnReceiveConfigSync", NetworkConfig.OnReceiveSync);
+            NetworkConfig.RequestSync();
+        }
+
+        [HarmonyPatch(typeof(GameNetworkManager), "StartDisconnect")]
+        [HarmonyPostfix]
+        public static void PlayerLeave()
+        {
+            LethalHandsPlugin.Instance.manualLogSource.LogInfo("Player disconnected, restoring config...");
+            LethalHands.Instance.SquareDown(false);
+            NetworkConfig.RevertSync();
+            LethalHands.Instance.LoadConfigValues();
         }
     }
 }

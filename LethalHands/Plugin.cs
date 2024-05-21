@@ -15,11 +15,12 @@ namespace LethalHands
     {
         private const string modGUID = "SlapitNow.LethalHands";
         private const string modName = "Lethal Hands";
-        private const string modVersion = "22.0.4";
+        private const string modVersion = "22.0.5";
 
         public static LethalHandsPlugin Instance;
         private readonly Harmony harmony = new Harmony(modGUID);
         public ManualLogSource manualLogSource;
+        public static LocalConfig MyConfig { get; internal set; }
         public LethalHands lethalHands;
 
         public static PluginInfo PInfo { get; private set; }
@@ -47,11 +48,13 @@ namespace LethalHands
             PInfo = ((BaseUnityPlugin)this).Info;
             manualLogSource = BepInEx.Logging.Logger.CreateLogSource(modGUID);
             Assets.LoadAssetBundlesFromFolder("assetbundles");
+            MyConfig = new(base.Config);
             harmony.PatchAll(typeof(LethalHandsPlugin));
             harmony.PatchAll(typeof(Patches.PlayerControllerBPatch));
             harmony.PatchAll(typeof(Patches.TerminalPatch));
             harmony.PatchAll(typeof(Patches.StartMatchLeverPatch));
             harmony.PatchAll(typeof(Patches.HudManagerPatch));
+            harmony.PatchAll(typeof(Patches.InteractTriggerPatch));
             harmony.PatchAll(typeof(Patches.NetworkingPatches));
             lethalHands = new LethalHands();
             lethalHands.Awake();
