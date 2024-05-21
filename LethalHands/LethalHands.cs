@@ -14,7 +14,7 @@ namespace LethalHands
         public float punchCooldown = 0f;
         static int shovelMask = 11012424;
         public PlayerControllerB playerControllerInstance;
-        static readonly string[] controlTips = { "Punch : [LMB]", "Punch but right : [RMB]" };
+        static readonly string[] controlTips = { "Punch : [Left Click]", "Punch but right : [Right Click]" };
         AudioClip[] hitSounds = new AudioClip[2];
 
         const float PUNCH_DELAY = 4f;
