@@ -3,6 +3,7 @@
 	- Adjusted some default values : 
 		- Punch range : 1f -> 1.2f (knife is 0.75f and shovel is 1.5f for reference)
 		- Stamina drain : 10% -> 0%
+	- Fixed being able to throw punches while climbing ladders
 
 ### v22.0.4 :
 	- Changed control tips to reflect the correct controls (any instance of [RMB] in the tips is replaced by the game with [LMB] for some reason)
