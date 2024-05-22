@@ -7,9 +7,6 @@ Allows the usage of your hands to fight back in dire situations.
 Press 'J' (configurable) to toggle the ability to throw left (LMB) and right (RMB) punches.
 For most entities, punches will have a 50% chance to deal shovel/sign damage.
 
-If squaring up brings you to third person, make sure LethalEmotesAPI's third person mode is set to normal.
-To do that, bring up the emote wheel ('c'), 'customize' (top right corner) and adjust the value in the top left menu.
-
 ### Installation
 
 The future is now, use a mod manager you fool
