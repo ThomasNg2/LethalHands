@@ -15,7 +15,7 @@ namespace LethalHands
     {
         private const string modGUID = "SlapitNow.LethalHands";
         private const string modName = "Lethal Hands";
-        private const string modVersion = "22.0.5";
+        private const string modVersion = "22.0.6";
 
         public static LethalHandsPlugin Instance;
         private readonly Harmony harmony = new Harmony(modGUID);
@@ -61,8 +61,6 @@ namespace LethalHands
             Animation.instantiateAnimations();
             NetcodePatcher();
             manualLogSource.LogInfo("Successfully caught these hands");
-            EmotesAPI.Settings.thirdPersonType.Value = ThirdPersonType.Normal;
-            manualLogSource.LogInfo("LethalEmotesAPI 3rd person mode overwritten to Normal");
         }
     }
 }

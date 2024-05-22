@@ -1,3 +1,6 @@
+### v22.0.6 :
+	- Animations now use new parameters to force first person instead of overwriting LethalEmotesAPI's settings
+
 ### v22.0.5 :
 	- Added configuration for punches (range, cooldown, damage, stamina drain,chance to deal damage)
 	- Adjusted some default values : 

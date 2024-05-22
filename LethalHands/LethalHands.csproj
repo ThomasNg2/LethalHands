@@ -46,7 +46,8 @@
     <Reference Include="LethalCompanyInputUtils">
       <HintPath>..\..\..\..\Downloads\Rune580-LethalCompany_InputUtils-0.6.0\plugins\LethalCompanyInputUtils\LethalCompanyInputUtils.dll</HintPath>
     </Reference>
-    <Reference Include="LethalEmotesAPI">
+    <Reference Include="LethalEmotesAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Downloads\Gemumoddo-LethalEmotesAPI-1.12.4\LethalEmotesApi\LethalEmotesAPI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
