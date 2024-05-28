@@ -133,18 +133,18 @@ namespace LethalHands
         public void PunchThrow()
         {
             punchCooldown = punchDelay;
-            playerControllerInstance.sprintMeter = Mathf.Max(0f, playerControllerInstance.sprintMeter - staminaDrain);
+            playerControllerInstance.sprintMeter = Mathf.Clamp(playerControllerInstance.sprintMeter - staminaDrain, 0f, 1f);
 
             RaycastHit[] objectsHitByPunch = Physics.SphereCastAll(playerControllerInstance.gameplayCamera.transform.position, 0.8f, playerControllerInstance.gameplayCamera.transform.forward, punchRange, shovelMask, QueryTriggerInteraction.Collide);
             List<RaycastHit> objectsHitByPunchList = objectsHitByPunch.OrderBy((RaycastHit raycast) => raycast.distance).ToList();
 
-            bool hitSomething = false;
+            bool hitSomething = false;  
             int hitTerrainIndex = -1;
             IHittable hittable;
             RaycastHit hitInfo;
             foreach (RaycastHit hit in objectsHitByPunchList)
             {
-                if (hit.transform.gameObject.layer == 8 || hit.transform.gameObject.layer == 11) // terrain
+                if ((hit.transform.gameObject.layer == 8 || hit.transform.gameObject.layer == 11) && !hit.collider.isTrigger) // terrain
                 {
                     hitSomething = true;
                     string hitObjectTag = hit.collider.gameObject.tag;
@@ -152,14 +152,13 @@ namespace LethalHands
                     {
                         if (StartOfRound.Instance.footstepSurfaces[j].surfaceTag == hitObjectTag)
                         {
-                            LethalHandsPlugin.Instance.manualLogSource.LogInfo($"Hit {hitObjectTag}");
                             hitTerrainIndex = j;
                             break;
                         }
                     }
                 }
                 else if (hit.transform.TryGetComponent<IHittable>(out hittable) &&
-                    (hit.point == Vector3.zero || !Physics.Linecast(playerControllerInstance.gameplayCamera.transform.position, hit.point, out hitInfo, StartOfRound.Instance.collidersAndRoomMaskAndDefault)))
+                    (hit.point == Vector3.zero || !Physics.Linecast(playerControllerInstance.gameplayCamera.transform.position, hit.point, out hitInfo, StartOfRound.Instance.collidersAndRoomMaskAndDefault, QueryTriggerInteraction.Ignore)))
                 {
                     if (hit.transform == playerControllerInstance.transform) continue; // Stop hitting yourself, (unless TZP ???)
                     hitSomething = true;
@@ -183,17 +182,22 @@ namespace LethalHands
             if (hitSomething)
             {
                 int randomIndex = UnityEngine.Random.Range(0, hitSounds.Length);
-                LethalHandsNetworker.Instance.PunchHitSoundServerRpc((int)playerControllerInstance.playerClientId, randomIndex);
+                LethalHandsNetworker.Instance.PunchHitSoundServerRpc((int)playerControllerInstance.playerClientId, randomIndex, hitTerrainIndex);
                 RoundManager.PlayRandomClip(playerControllerInstance.movementAudio, hitSounds);
-                UnityEngine.Object.FindObjectOfType<RoundManager>().PlayAudibleNoise(playerControllerInstance.transform.position, 10f, 0.5f);
+                RoundManager.Instance.PlayAudibleNoise(playerControllerInstance.transform.position, 10f, 0.5f);
             }
         }
 
-        public void PunchHitSound(int playerID, int soundIndex)
+        public void PunchHitSound(int playerID, int soundIndex, int terrainIndex)
         {
             AudioSource sauce = StartOfRound.Instance.allPlayerScripts[playerID].movementAudio;
             sauce.PlayOneShot(hitSounds[soundIndex]);
             WalkieTalkie.TransmitOneShotAudio(sauce, hitSounds[soundIndex]);
+            if(terrainIndex != -1)
+            {
+                sauce.PlayOneShot(StartOfRound.Instance.footstepSurfaces[terrainIndex].hitSurfaceSFX);
+                WalkieTalkie.TransmitOneShotAudio(sauce, StartOfRound.Instance.footstepSurfaces[terrainIndex].hitSurfaceSFX);
+            }
         }
     }
 }

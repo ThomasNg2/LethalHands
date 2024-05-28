@@ -1,3 +1,8 @@
+### v22.0.7 :
+	- Implemented the changes from the MeleeFixes mod by ButteryStancakes (suggested by NeatWolf)
+	- Terrain's sound is played when hit
+	
+
 ### v22.0.6 :
 	- Animations now use new parameters to force first person instead of overwriting LethalEmotesAPI's settings
 
