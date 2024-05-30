@@ -22,7 +22,7 @@ The adjustable values are:
 - 'PunchDamage' : How much damage punches deal [1]
 - 'ChanceToDealDamage' : How likely punches are to deal 1 damage (equivalent to 1 shovel/knife hit) [0.5]
 - 'StaminaDrain' : How much stamina (% of max stamina) is drained per punch [0]
-- 'StaminaRequirement' : How much stamine (% of max stamina) is required to punch [0]
+- 'StaminaRequirement' : How much stamina (% of max stamina) is required to punch [0]
 - 'PunchingHaltsStaminaRegen' : Whether punching should halt stamina regen for a brief period [false]
 
 
