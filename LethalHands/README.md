@@ -18,7 +18,7 @@ Every player needs to have the mod installed.
 How balanced the mod is can be adjusted in the `BepInEx/config/SlapitNow.LethalHands.cfg` file or using [LethalConfig](https://thunderstore.io/c/lethal-company/p/AinaVT/LethalConfig/).
 The adjustable values are:
 - 'PunchRange' : How far the punches can reach [1.2]  (for reference, shovel is 1.5 and knife is 0.75)
-- 'PunchCooldown' : How many secondes you must wait between punches [1]
+- 'PunchCooldown' : How many seconds you must wait between punches [1]
 - 'PunchDamage' : How much damage punches deal [1]
 - 'ChanceToDealDamage' : How likely punches are to deal 1 damage (equivalent to 1 shovel/knife hit) [0.5]
 - 'StaminaDrain' : How much stamina (% of max stamina) is drained per punch [0]
