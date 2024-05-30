@@ -20,8 +20,10 @@ The adjustable values are:
 - 'PunchRange' : How far the punches can reach [1.2]  (for reference, shovel is 1.5 and knife is 0.75)
 - 'PunchCooldown' : How many secondes you must wait between punches [1]
 - 'PunchDamage' : How much damage punches deal [1]
-- 'StaminaDrain' : How much stamina (% of max stamina) is drained per punch [0]
 - 'ChanceToDealDamage' : How likely punches are to deal 1 damage (equivalent to 1 shovel/knife hit) [0.5]
+- 'StaminaDrain' : How much stamina (% of max stamina) is drained per punch [0]
+- 'StaminaRequirement' : How much stamine (% of max stamina) is required to punch [0]
+- 'PunchingHaltsStaminaRegen' : Whether punching should halt stamina regen for a brief period [false]
 
 
 ### Credits

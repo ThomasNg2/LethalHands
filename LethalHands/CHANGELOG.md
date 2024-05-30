@@ -1,6 +1,10 @@
 ### v22.0.7 :
 	- Implemented the changes from the MeleeFixes mod by ButteryStancakes (suggested by NeatWolf)
-	- Terrain's sound is played when hit
+	- Terrain now plays its sound when punched
+	- Slightly delayed the punch hit registration to sync the hit with the animation
+	- Added more stamina-related config options (suggested by Kondakov02) :
+		- Stamina required to perform a punch (0% by default)
+		- Punching stops stamina regen for some time (false by default)
 	
 
 ### v22.0.6 :
