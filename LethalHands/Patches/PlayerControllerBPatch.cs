@@ -11,23 +11,23 @@ namespace LethalHands.Patches
         [HarmonyPrefix]
         static void PreGrabObject()
         {
-            LethalHandsPlugin.Instance.lethalHands.SquareDown(false);
+            LethalHands.Instance.SquareDown(false);
         }
 
         [HarmonyPatch("PerformEmote")]
         [HarmonyPrefix]
         static void PrePerformEmote()
         {
-            LethalHandsPlugin.Instance.lethalHands.SquareDown(false);
+            LethalHands.Instance.SquareDown(false);
         }
 
         [HarmonyPatch("KillPlayer")]
         [HarmonyPostfix]
         static void PostKillPlayer()
         {
-            if (LethalHandsPlugin.Instance.lethalHands.playerControllerInstance.isPlayerDead)
+            if (LethalHands.Instance.playerControllerInstance.isPlayerDead)
             {
-                LethalHandsPlugin.Instance.lethalHands.SquareDown(false);
+                LethalHands.Instance.SquareDown(false);
             }
         }
 
@@ -35,16 +35,32 @@ namespace LethalHands.Patches
         [HarmonyPrefix]
         static void PreCancelSpecialTriggerAnimations()
         {
-            LethalHandsPlugin.Instance.lethalHands.SquareDown(false);
+            LethalHands.Instance?.SquareDown(false);
         }
 
         [HarmonyPatch("Update")]
         [HarmonyPostfix]
         static void PostUpdate()
         {
-            if (LethalHandsPlugin.Instance.lethalHands.punchCooldown > 0f)
+            if (LethalHands.Instance?.punchCooldown > 0f)
             {
-                LethalHandsPlugin.Instance.lethalHands.punchCooldown -= Time.deltaTime;
+                LethalHands.Instance.punchCooldown -= Time.deltaTime;
+            }
+        }
+
+        // Stamina regen prevention or something
+        [HarmonyPatch("LateUpdate")]
+        [HarmonyPostfix]
+        static void PostLateUpdate()
+        {
+            if (LethalHands.Instance == null) return;
+            if(LethalHands.Instance.punchingHaltsStaminaRegen && LethalHands.Instance.freezeStaminaRegen)
+            {
+                LethalHands.Instance.playerControllerInstance.sprintMeter = Mathf.Clamp(
+                    LethalHands.Instance.playerControllerInstance.sprintMeter,
+                    0,
+                    LethalHands.Instance.recordedStamina);
+                LethalHands.Instance.playerControllerInstance.sprintMeterUI.fillAmount = LethalHands.Instance.playerControllerInstance.sprintMeter;
             }
         }
     }

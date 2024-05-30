@@ -11,8 +11,11 @@ namespace LethalHands
         public float punchRange;
         public float punchCooldown;
         public int punchDamage;
-        public int staminaDrain;
         public int chanceToDealDamage;
+
+        public bool punchingHaltsStaminaRegen;
+        public int punchStaminaRequirement;
+        public int staminaDrain;
 
         public NetworkConfig()
         {
@@ -20,8 +23,11 @@ namespace LethalHands
             punchRange = LocalConfig.punchRange.Value;
             punchCooldown = LocalConfig.punchCooldown.Value;
             punchDamage = LocalConfig.punchDamage.Value;
-            staminaDrain = LocalConfig.staminaDrain.Value;
             chanceToDealDamage = LocalConfig.chanceToDealDamage.Value;
+
+            staminaDrain = LocalConfig.staminaDrain.Value;
+            punchStaminaRequirement = LocalConfig.staminaRequirement.Value;
+            punchingHaltsStaminaRegen = LocalConfig.punchingHaltsStaminaRegen.Value;
         }
 
         public static void RequestSync()

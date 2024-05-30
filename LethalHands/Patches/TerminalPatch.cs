@@ -1,9 +1,4 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LethalHands.Patches
 {
@@ -14,7 +9,7 @@ namespace LethalHands.Patches
         [HarmonyPrefix]
         static void PreBeginUsingTerminal()
         {
-            LethalHandsPlugin.Instance.lethalHands.SquareDown(false);
+            LethalHands.Instance.SquareDown(false);
         }
     }
 }

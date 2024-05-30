@@ -35,6 +35,7 @@ namespace LethalHands.Patches
         [HarmonyPostfix]
         public static void InitializeLocalPlayer()
         {
+            LethalHands lethalHands = GameNetworkManager.Instance.localPlayerController.gameObject.AddComponent<LethalHands>();
             LethalHandsPlugin.Instance.manualLogSource.LogInfo("Player initialized, setting up config...");
             if (NetworkConfig.IsHost)
             {
@@ -54,9 +55,8 @@ namespace LethalHands.Patches
         public static void PlayerLeave()
         {
             LethalHandsPlugin.Instance.manualLogSource.LogInfo("Player disconnected, restoring config...");
-            LethalHands.Instance.SquareDown(false);
+            LethalHands.Instance.Sleep();
             NetworkConfig.RevertSync();
-            LethalHands.Instance.LoadConfigValues();
         }
     }
 }

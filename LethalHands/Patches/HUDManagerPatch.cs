@@ -9,7 +9,7 @@ namespace LethalHands.Patches
         [HarmonyPostfix]
         private static void CanPlayerScanPostfix(ref bool __result)
         {
-            __result = __result && !LethalHandsPlugin.Instance.lethalHands.isSquaredUp;
+            __result = __result && (LethalHands.Instance != null && !LethalHands.Instance.isSquaredUp);
         }
     }
 }

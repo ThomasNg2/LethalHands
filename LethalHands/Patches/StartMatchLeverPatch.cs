@@ -9,7 +9,7 @@ namespace LethalHands.Patches
         [HarmonyPrefix]
         static void PreLeverAnimation()
         {
-            LethalHandsPlugin.Instance.lethalHands.SquareDown(false);
+            LethalHands.Instance.SquareDown(false);
         }
     }
 }
