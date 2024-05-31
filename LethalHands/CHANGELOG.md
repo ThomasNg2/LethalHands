@@ -1,5 +1,5 @@
 ### v22.0.8 :
-	- 
+	- Fixed an issue with TooManyEmotes that would prevent the player from scanning/punching
 
 ### v22.0.7 :
 	- Implemented the changes from the MeleeFixes mod by ButteryStancakes (suggested by NeatWolf)
