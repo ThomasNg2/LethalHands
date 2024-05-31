@@ -35,7 +35,10 @@ namespace LethalHands.Patches
         [HarmonyPostfix]
         public static void InitializeLocalPlayer()
         {
-            LethalHands lethalHands = GameNetworkManager.Instance.localPlayerController.gameObject.AddComponent<LethalHands>();
+            if(LethalHands.Instance == null)
+            {
+                LethalHands lethalHands = GameNetworkManager.Instance.localPlayerController.gameObject.AddComponent<LethalHands>();
+            }
             LethalHandsPlugin.Instance.manualLogSource.LogInfo("Player initialized, setting up config...");
             if (NetworkConfig.IsHost)
             {

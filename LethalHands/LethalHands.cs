@@ -35,6 +35,7 @@ namespace LethalHands
 
         public void Awake()
         {
+            if (Instance != null) return;
             Instance = this;
             Input.SquareUpInput.Instance.SquareUpKey.performed += SquareUpPerformed;
         }

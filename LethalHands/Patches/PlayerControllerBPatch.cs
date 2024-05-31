@@ -42,7 +42,7 @@ namespace LethalHands.Patches
         [HarmonyPostfix]
         static void PostUpdate()
         {
-            if (LethalHands.Instance?.punchCooldown > 0f)
+            if (LethalHands.Instance != null && LethalHands.Instance.punchCooldown > 0f)
             {
                 LethalHands.Instance.punchCooldown -= Time.deltaTime;
             }
