@@ -1,3 +1,9 @@
+### v22.0.9 :
+	- Added an extra check to exit the fighting mode after picking up an item
+	- Added extra config options regarding items :
+		- Which items are dropped upon squaring up : all, current or none (all by default)
+		- Whether or not holding an item in the fighting mode is allowed (false by default)
+
 ### v22.0.8 :
 	- Fixed an issue with TooManyEmotes that would prevent the player from scanning/punching
 

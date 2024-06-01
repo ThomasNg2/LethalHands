@@ -30,9 +30,10 @@ namespace LethalHands
         float staminaDrain = NetworkConfig.Default.staminaDrain * 0.01f;
         public bool punchingHaltsStaminaRegen = NetworkConfig.Default.punchingHaltsStaminaRegen;
         float punchStaminaRequirement = NetworkConfig.Default.punchStaminaRequirement * 0.01f;
+
+        ItemMode itemMode = NetworkConfig.Default.itemDropMode;
+        public bool allowItems = NetworkConfig.Default.allowItems;
         
-
-
         public void Awake()
         {
             if (Instance != null) return;
@@ -42,7 +43,6 @@ namespace LethalHands
 
         public void LoadConfigValues()
         {
-            LethalHandsPlugin.Instance.manualLogSource.LogInfo($"New config values : {NetworkConfig.Instance.punchRange} {NetworkConfig.Instance.punchCooldown} {NetworkConfig.Instance.staminaDrain} {NetworkConfig.Instance.chanceToDealDamage} {NetworkConfig.Instance.punchDamage}");
             punchRange = NetworkConfig.Instance.punchRange;
             punchDelay = NetworkConfig.Instance.punchCooldown * 4;
             punchDamage = NetworkConfig.Instance.punchDamage;
@@ -51,6 +51,9 @@ namespace LethalHands
             staminaDrain = NetworkConfig.Instance.staminaDrain * 0.01f;
             punchingHaltsStaminaRegen = NetworkConfig.Instance.punchingHaltsStaminaRegen;
             punchStaminaRequirement = NetworkConfig.Instance.punchStaminaRequirement * 0.01f;
+
+            itemMode = NetworkConfig.Instance.itemDropMode;
+            allowItems = NetworkConfig.Instance.allowItems;
         }
 
         public void SquareUpPerformed(InputAction.CallbackContext context)
@@ -95,7 +98,17 @@ namespace LethalHands
         {
             if (!isSquaredUp && !playerControllerInstance.inSpecialInteractAnimation)
             {
-                playerControllerInstance.DropAllHeldItemsAndSync();
+                switch (itemMode)
+                {
+                    case ItemMode.All:
+                        playerControllerInstance.DropAllHeldItemsAndSync();
+                        break;
+                    case ItemMode.Current:
+                        playerControllerInstance.DiscardHeldObject();
+                        break;
+                    case ItemMode.None:
+                        break;
+                }
                 playerControllerInstance.performingEmote = false;
                 playerControllerInstance.StopPerformingEmoteServerRpc();
                 playerControllerInstance.timeSinceStartingEmote = 0f;

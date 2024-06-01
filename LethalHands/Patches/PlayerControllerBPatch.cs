@@ -11,14 +11,22 @@ namespace LethalHands.Patches
         [HarmonyPrefix]
         static void PreGrabObject()
         {
-            LethalHands.Instance.SquareDown(false);
+            if(!LethalHands.Instance.allowItems) LethalHands.Instance.SquareDown(false);
         }
 
         [HarmonyPatch("BeginGrabObject")]
         [HarmonyPrefix]
         static void PreBeginGrabObject()
         {
-            LethalHands.Instance.SquareDown(false);
+            if (!LethalHands.Instance.allowItems) LethalHands.Instance.SquareDown(false);
+        }
+
+        [HarmonyPatch("SwitchToItemSlot")]
+        [HarmonyPostfix]
+        static void PostSwitchToItemSlot()
+        {
+            if (LethalHands.Instance.allowItems) return;
+            if(LethalHands.Instance.playerControllerInstance.isHoldingObject) LethalHands.Instance.SquareDown(false);
         }
 
         [HarmonyPatch("PerformEmote")]

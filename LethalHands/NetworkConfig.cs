@@ -17,6 +17,9 @@ namespace LethalHands
         public int punchStaminaRequirement;
         public int staminaDrain;
 
+        public ItemMode itemDropMode;
+        public bool allowItems;
+
         public NetworkConfig()
         {
             InitInstance(this);
@@ -28,6 +31,9 @@ namespace LethalHands
             staminaDrain = LocalConfig.staminaDrain.Value;
             punchStaminaRequirement = LocalConfig.staminaRequirement.Value;
             punchingHaltsStaminaRegen = LocalConfig.punchingHaltsStaminaRegen.Value;
+
+            itemDropMode = LocalConfig.itemDropMode.Value;
+            allowItems = LocalConfig.allowItems.Value;
         }
 
         public static void RequestSync()
