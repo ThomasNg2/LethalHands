@@ -14,6 +14,13 @@ namespace LethalHands.Patches
             LethalHands.Instance.SquareDown(false);
         }
 
+        [HarmonyPatch("BeginGrabObject")]
+        [HarmonyPrefix]
+        static void PreBeginGrabObject()
+        {
+            LethalHands.Instance.SquareDown(false);
+        }
+
         [HarmonyPatch("PerformEmote")]
         [HarmonyPrefix]
         static void PrePerformEmote()
