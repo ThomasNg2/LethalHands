@@ -15,10 +15,11 @@ namespace LethalHands.Patches
         }
 
         [HarmonyPatch("BeginGrabObject")]
-        [HarmonyPrefix]
-        static void PreBeginGrabObject()
+        [HarmonyPostfix]
+        static void PostBeginGrabObject()
         {
-            if (!LethalHands.Instance.allowItems) LethalHands.Instance.SquareDown(false);
+            if (!LethalHands.Instance.allowItems &&
+                LethalHands.Instance.playerControllerInstance.isGrabbingObjectAnimation) LethalHands.Instance.SquareDown(false);
         }
 
         [HarmonyPatch("SwitchToItemSlot")]

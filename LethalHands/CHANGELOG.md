@@ -1,3 +1,7 @@
+### v22.0.10 :
+	- Fixed 'Current' item drop option not allowing squaring up unless an item is held
+	- Fixed trying to interact while squared up exiting the fighting mode
+
 ### v22.0.9 :
 	- Added an extra check to exit the fighting mode after picking up an item (credits to NecroWing for sparing me some research)
 	- Added extra config options regarding items :

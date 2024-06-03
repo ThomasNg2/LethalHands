@@ -104,7 +104,7 @@ namespace LethalHands
                         playerControllerInstance.DropAllHeldItemsAndSync();
                         break;
                     case ItemMode.Current:
-                        playerControllerInstance.DiscardHeldObject();
+                        if(playerControllerInstance.isHoldingObject) playerControllerInstance.DiscardHeldObject();
                         break;
                     case ItemMode.None:
                         break;
