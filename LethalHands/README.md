@@ -5,7 +5,7 @@ Allows the usage of your hands to fight back in dire situations.
 ### Usage
 
 Press 'J' (configurable) to toggle the ability to throw left (LMB) and right (RMB) punches.
-For most entities, punches will have a 50% chance (configurable) to deal shovel/sign damage.
+For most entities, punches will do half the damage of a standard shovel (configurable).
 
 ### Installation
 
@@ -19,8 +19,7 @@ How balanced the mod is can be adjusted in the `BepInEx/config/SlapitNow.LethalH
 The adjustable values are:
 - 'PunchRange' : How far the punches can reach [1.2]  (for reference, shovel is 1.5 and knife is 0.75)
 - 'PunchCooldown' : How many seconds you must wait between punches [1] (some mods may affect this)
-- 'PunchDamage' : How much damage punches deal (1 is equivalent to a shovel/knife hit) [1]
-- 'ChanceToDealDamage' : How likely punches are to deal damage [0.5]
+- 'PunchDamage' : How much damage punches deal (1 is equivalent to a shovel/knife hit) [0.5]
 
 - 'StaminaDrain' : How much stamina (% of max stamina) is drained per punch [0]
 - 'StaminaRequirement' : How much stamina (% of max stamina) is required to punch [0]

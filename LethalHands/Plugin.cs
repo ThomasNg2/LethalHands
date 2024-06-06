@@ -15,7 +15,7 @@ namespace LethalHands
     {
         private const string modGUID = "SlapitNow.LethalHands";
         private const string modName = "Lethal Hands";
-        private const string modVersion = "22.0.10";
+        private const string modVersion = "22.1.0";
 
         public static LethalHandsPlugin Instance;
         private readonly Harmony harmony = new Harmony(modGUID);
@@ -55,6 +55,8 @@ namespace LethalHands
             harmony.PatchAll(typeof(Patches.StartMatchLeverPatch));
             harmony.PatchAll(typeof(Patches.HudManagerPatch));
             harmony.PatchAll(typeof(Patches.InteractTriggerPatch));
+            harmony.PatchAll(typeof(Patches.EnemyAIPatch));
+            harmony.PatchAll(typeof(Patches.StartOfRoundPatch));
             Animation.instantiateAnimations();
             NetcodePatcher();
             manualLogSource.LogInfo("Successfully caught these hands");

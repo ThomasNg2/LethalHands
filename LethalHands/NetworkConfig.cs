@@ -10,8 +10,7 @@ namespace LethalHands
     {
         public float punchRange;
         public float punchCooldown;
-        public int punchDamage;
-        public int chanceToDealDamage;
+        public float punchDamage;
 
         public bool punchingHaltsStaminaRegen;
         public int punchStaminaRequirement;
@@ -26,7 +25,6 @@ namespace LethalHands
             punchRange = LocalConfig.punchRange.Value;
             punchCooldown = LocalConfig.punchCooldown.Value;
             punchDamage = LocalConfig.punchDamage.Value;
-            chanceToDealDamage = LocalConfig.chanceToDealDamage.Value;
 
             staminaDrain = LocalConfig.staminaDrain.Value;
             punchStaminaRequirement = LocalConfig.staminaRequirement.Value;

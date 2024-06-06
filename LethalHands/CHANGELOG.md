@@ -1,3 +1,7 @@
+### v22.1.0 :
+	- Punches now do fixed, possibly non integer damage
+	- Dead enemies no longer absorb punches
+
 ### v22.0.10 :
 	- Fixed 'Current' item drop option not allowing squaring up unless an item is held
 	- Fixed trying to interact while squared up exiting the fighting mode

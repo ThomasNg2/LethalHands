@@ -24,8 +24,7 @@ namespace LethalHands
 
         float punchRange = NetworkConfig.Default.punchRange; // Shovel : 1.5, Knife : 0.75
         float punchDelay = NetworkConfig.Default.punchCooldown * 4;
-        int punchDamage = NetworkConfig.Default.punchDamage;
-        float chanceToDealDmgToMonsters = 0.01f * NetworkConfig.Default.chanceToDealDamage;
+        public float punchDamage = NetworkConfig.Default.punchDamage;
 
         float staminaDrain = NetworkConfig.Default.staminaDrain * 0.01f;
         public bool punchingHaltsStaminaRegen = NetworkConfig.Default.punchingHaltsStaminaRegen;
@@ -46,7 +45,6 @@ namespace LethalHands
             punchRange = NetworkConfig.Instance.punchRange;
             punchDelay = NetworkConfig.Instance.punchCooldown * 4;
             punchDamage = NetworkConfig.Instance.punchDamage;
-            chanceToDealDmgToMonsters = 0.01f * NetworkConfig.Instance.chanceToDealDamage;
 
             staminaDrain = NetworkConfig.Instance.staminaDrain * 0.01f;
             punchingHaltsStaminaRegen = NetworkConfig.Instance.punchingHaltsStaminaRegen;
@@ -203,13 +201,13 @@ namespace LethalHands
                         EnemyAICollisionDetect enemyCollision = hit.collider.GetComponent<EnemyAICollisionDetect>();
                         if (enemyCollision != null)
                         {
+                            if(enemyCollision.mainScript.isEnemyDead) continue;
                             enemyCollision.onlyCollideWhenGrounded = false; // magic flag that makes enemies not get hit otherwise
                         }
                     }
                     try
                     {
-                        int damage = UnityEngine.Random.Range(0f, 1f) <= chanceToDealDmgToMonsters ? punchDamage : 0;
-                        hittable.Hit(damage, forward, playerWhoHit: playerControllerInstance, playHitSFX: true);
+                        hittable.Hit(-22, forward, playerWhoHit: playerControllerInstance, playHitSFX: true);
                     } catch { }
                     break;
                 }

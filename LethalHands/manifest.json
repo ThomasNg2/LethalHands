@@ -1,6 +1,6 @@
 ﻿{
     "name": "LethalHands",
-    "version_number": "22.0.10",
+    "version_number": "22.1.0",
     "website_url": "https://github.com/ThomasNg2/LethalHands",
     "description": "Allows the usage of your hands to fight back in dire situations.",
     "dependencies": [

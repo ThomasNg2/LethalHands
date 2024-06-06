@@ -99,16 +99,19 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="Assets.cs" />
+    <Compile Include="EnemyFloatHealth.cs" />
     <Compile Include="NetworkConfig.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="LethalHands.cs" />
     <Compile Include="LethalHandsNetworker.cs" />
     <Compile Include="LocalConfig.cs" />
     <Compile Include="Patches\HudManagerPatch.cs" />
+    <Compile Include="Patches\EnemyAIPatch.cs" />
     <Compile Include="Patches\InteractTriggerPatch.cs" />
     <Compile Include="Patches\NetworkingPatches.cs" />
     <Compile Include="Patches\PlayerControllerBPatch.cs" />
     <Compile Include="Patches\StartMatchLeverPatch.cs" />
+    <Compile Include="Patches\StartOfRoundPatch.cs" />
     <Compile Include="Patches\TerminalPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

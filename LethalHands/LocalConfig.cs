@@ -6,8 +6,7 @@ namespace LethalHands
     {
         public static ConfigEntry<float> punchRange;
         public static ConfigEntry<float> punchCooldown;
-        public static ConfigEntry<int> punchDamage;
-        public static ConfigEntry<int> chanceToDealDamage;
+        public static ConfigEntry<float> punchDamage;
 
         public static ConfigEntry<int> staminaDrain;
         public static ConfigEntry<int> staminaRequirement;
@@ -23,8 +22,7 @@ namespace LethalHands
         {
             punchRange = cfg.Bind("Balancing", "PunchRange", 1.2f, "Range of the punch (for reference, shovels are 1.5 and knives are 0.75)");
             punchCooldown = cfg.Bind("Balancing", "PunchCooldown", 1f, "Cooldown (in seconds) between punches");
-            punchDamage = cfg.Bind("Balancing", "PunchDamage", 1, "Damage dealt by a successful roll");
-            chanceToDealDamage = cfg.Bind("Balancing", "ChanceToDealDmg", 50, "Chance (%) to deal damage (doesn't apply to some entities)");
+            punchDamage = cfg.Bind("Balancing", "PunchDamage", 0.5f, "Damage dealt by a punch");
 
             staminaDrain = cfg.Bind("Stamina Balancing", "StaminaDrain", 0, "Max stamina drained (%) per punch");
             staminaRequirement = cfg.Bind("Stamina Balancing", "StaminaRequirement", 0, "Max stamina required (%) to punch");
