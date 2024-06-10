@@ -21,6 +21,8 @@ The adjustable values are:
 - 'PunchCooldown' : How many seconds you must wait between punches [1] (some mods may affect this)
 - 'PunchDamage' : How much damage punches deal (1 is equivalent to a shovel/knife hit) [0.5]
 
+- 'PunchOffClingers' : Whether punches should hit attached snarefleas/tulip snakes [true]
+
 - 'StaminaDrain' : How much stamina (% of max stamina) is drained per punch [0]
 - 'StaminaRequirement' : How much stamina (% of max stamina) is required to punch [0]
 - 'PunchingHaltsStaminaRegen' : Whether punching should halt stamina regen for a brief period [false]

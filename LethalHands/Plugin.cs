@@ -15,7 +15,7 @@ namespace LethalHands
     {
         private const string modGUID = "SlapitNow.LethalHands";
         private const string modName = "Lethal Hands";
-        private const string modVersion = "22.1.0";
+        private const string modVersion = "22.1.1";
 
         public static LethalHandsPlugin Instance;
         private readonly Harmony harmony = new Harmony(modGUID);

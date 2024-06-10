@@ -1,3 +1,6 @@
+### v22.1.1 :
+	- Added a config option to toggle being able to punch snarefleas/tulip snakes
+
 ### v22.1.0 :
 	- Punches now do fixed, possibly non integer damage
 	- Dead enemies no longer absorb punches

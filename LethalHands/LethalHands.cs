@@ -26,6 +26,8 @@ namespace LethalHands
         float punchDelay = NetworkConfig.Default.punchCooldown * 4;
         public float punchDamage = NetworkConfig.Default.punchDamage;
 
+        bool punchOffClingers = NetworkConfig.Default.punchOffClingers;
+
         float staminaDrain = NetworkConfig.Default.staminaDrain * 0.01f;
         public bool punchingHaltsStaminaRegen = NetworkConfig.Default.punchingHaltsStaminaRegen;
         float punchStaminaRequirement = NetworkConfig.Default.punchStaminaRequirement * 0.01f;
@@ -45,6 +47,8 @@ namespace LethalHands
             punchRange = NetworkConfig.Instance.punchRange;
             punchDelay = NetworkConfig.Instance.punchCooldown * 4;
             punchDamage = NetworkConfig.Instance.punchDamage;
+
+            punchOffClingers = NetworkConfig.Instance.punchOffClingers;
 
             staminaDrain = NetworkConfig.Instance.staminaDrain * 0.01f;
             punchingHaltsStaminaRegen = NetworkConfig.Instance.punchingHaltsStaminaRegen;
@@ -144,8 +148,8 @@ namespace LethalHands
             freezeStaminaRegen = true;
             CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__lpunch");
             yield return new WaitForSeconds(0.1f);
-            PunchThrow();
             punchingCoroutine = null;
+            PunchThrow();
             yield return new WaitForSeconds(0.9f);
             freezeStaminaRegen = false;
         }
@@ -159,8 +163,8 @@ namespace LethalHands
             freezeStaminaRegen = true;
             CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__rpunch");
             yield return new WaitForSeconds(0.1f);
-            PunchThrow();
             punchingCoroutine = null;
+            PunchThrow();
             yield return new WaitForSeconds(0.9f);
             freezeStaminaRegen = false;
         }
@@ -196,17 +200,23 @@ namespace LethalHands
                     if (hit.transform == playerControllerInstance.transform) continue; // Stop hitting yourself, (unless TZP ???)
                     hitSomething = true;
                     Vector3 forward = playerControllerInstance.gameplayCamera.transform.forward;
-                    if (hit.collider)
+                    if (hittable is EnemyAICollisionDetect enemyAICollider)
                     {
-                        EnemyAICollisionDetect enemyCollision = hit.collider.GetComponent<EnemyAICollisionDetect>();
-                        if (enemyCollision != null)
+                        EnemyAI enemyAI = enemyAICollider.mainScript;
+                        if(enemyAI.isEnemyDead) continue;
+                        if(!punchOffClingers && enemyAI is CentipedeAI snarefleaAI)
                         {
-                            if(enemyCollision.mainScript.isEnemyDead) continue;
-                            enemyCollision.onlyCollideWhenGrounded = false; // magic flag that makes enemies not get hit otherwise
+                            if (snarefleaAI.clingingToPlayer == playerControllerInstance) continue;
                         }
+                        if(!punchOffClingers && enemyAI is FlowerSnakeEnemy tulipSnekAI)
+                        {
+                            if (tulipSnekAI.clingingToPlayer == playerControllerInstance) continue;
+                        }
+                        enemyAICollider.onlyCollideWhenGrounded = false; // magic flag that makes enemies not get hit otherwise
                     }
                     try
                     {
+                        LethalHandsPlugin.Instance.manualLogSource.LogInfo($"Hit {hittable.GetType()}");
                         hittable.Hit(-22, forward, playerWhoHit: playerControllerInstance, playHitSFX: true);
                     } catch { }
                     break;
