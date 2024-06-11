@@ -1,5 +1,5 @@
 ### v22.1.1 :
-	- Added a config option to toggle being able to punch snarefleas/tulip snakes
+	- Added a config option to toggle being able to punch snarefleas/tulip snakes (suggested by teacyn)
 	- Switched to a different system for cooldowns : 
 		- The cooldown should be more accurate when using mods like MoreCompany
 		- Punching at incredible hihg speed is possible again
