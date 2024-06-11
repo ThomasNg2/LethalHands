@@ -54,16 +54,6 @@ namespace LethalHands.Patches
             LethalHands.Instance?.SquareDown(false);
         }
 
-        [HarmonyPatch("Update")]
-        [HarmonyPostfix]
-        static void PostUpdate()
-        {
-            if (LethalHands.Instance != null && LethalHands.Instance.punchCooldown > 0f)
-            {
-                LethalHands.Instance.punchCooldown -= Time.deltaTime;
-            }
-        }
-
         // Stamina regen prevention or something
         [HarmonyPatch("LateUpdate")]
         [HarmonyPostfix]

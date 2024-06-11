@@ -12,7 +12,6 @@ namespace LethalHands
     {
         public static LethalHands Instance { get; private set; }
         public bool isSquaredUp = false;
-        public float punchCooldown = 0f;
         static int shovelMask = 11012424;
         public PlayerControllerB playerControllerInstance = GameNetworkManager.Instance.localPlayerController;
         static readonly string[] controlTips = { "Left Punch : [Left Click]", "Right Punch : [Right Click]" };
@@ -20,10 +19,12 @@ namespace LethalHands
         public float recordedStamina = 1f;
         public bool freezeStaminaRegen = false;
 
+
         Coroutine punchingCoroutine = null;
+        Coroutine unfreezeStaminaRegenCoroutine = null;
 
         float punchRange = NetworkConfig.Default.punchRange; // Shovel : 1.5, Knife : 0.75
-        float punchDelay = NetworkConfig.Default.punchCooldown * 4;
+        float punchDelay = NetworkConfig.Default.punchCooldown;
         public float punchDamage = NetworkConfig.Default.punchDamage;
 
         bool punchOffClingers = NetworkConfig.Default.punchOffClingers;
@@ -34,6 +35,9 @@ namespace LethalHands
 
         ItemMode itemMode = NetworkConfig.Default.itemDropMode;
         public bool allowItems = NetworkConfig.Default.allowItems;
+
+        float punchConnectTime = Mathf.Min(0.1f * NetworkConfig.Default.punchCooldown, 0.1f);
+        float punchFinishingTime = Mathf.Min(0.9f * NetworkConfig.Default.punchCooldown, 0.9f);
         
         public void Awake()
         {
@@ -56,6 +60,8 @@ namespace LethalHands
 
             itemMode = NetworkConfig.Instance.itemDropMode;
             allowItems = NetworkConfig.Instance.allowItems;
+
+            punchConnectTime = Mathf.Min(0.2f * NetworkConfig.Instance.punchCooldown, 0.1f);
         }
 
         public void SquareUpPerformed(InputAction.CallbackContext context)
@@ -78,7 +84,7 @@ namespace LethalHands
 
         public void LeftPunchPerformed(InputAction.CallbackContext context)
         {
-            if (context.performed && isSquaredUp && punchCooldown <= 0f &&
+            if (context.performed && isSquaredUp &&
                 playerControllerInstance.sprintMeter >= punchStaminaRequirement &&
                 punchingCoroutine == null)
             {
@@ -88,7 +94,7 @@ namespace LethalHands
 
         public void RightPunchPerformed(InputAction.CallbackContext context)
         {
-            if (context.performed && isSquaredUp && punchCooldown <= 0f &&
+            if (context.performed && isSquaredUp &&
                 playerControllerInstance.sprintMeter >= punchStaminaRequirement &&
                 punchingCoroutine == null)
             {
@@ -115,7 +121,6 @@ namespace LethalHands
                 playerControllerInstance.StopPerformingEmoteServerRpc();
                 playerControllerInstance.timeSinceStartingEmote = 0f;
                 isSquaredUp = true;
-                punchCooldown = punchDelay/2;
                 CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__squareup");
                 IngamePlayerSettings.Instance.playerInput.actions.FindAction("ActivateItem").performed += LeftPunchPerformed;
                 IngamePlayerSettings.Instance.playerInput.actions.FindAction("PingScan").performed += RightPunchPerformed;
@@ -142,30 +147,36 @@ namespace LethalHands
         private IEnumerator LeftPunch()
         {
             LethalHandsPlugin.Instance.manualLogSource.LogInfo("Left Punch");
-            punchCooldown = punchDelay;
             playerControllerInstance.sprintMeter = Mathf.Clamp(playerControllerInstance.sprintMeter - staminaDrain, 0f, 1f);
             recordedStamina = playerControllerInstance.sprintMeter;
             freezeStaminaRegen = true;
             CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__lpunch");
-            yield return new WaitForSeconds(0.1f);
-            punchingCoroutine = null;
+            yield return new WaitForSeconds(punchConnectTime);
             PunchThrow();
-            yield return new WaitForSeconds(0.9f);
-            freezeStaminaRegen = false;
+            yield return new WaitForSeconds(punchFinishingTime);
+            punchingCoroutine = null;
+            if(unfreezeStaminaRegenCoroutine != null) StopCoroutine(unfreezeStaminaRegenCoroutine);
+            unfreezeStaminaRegenCoroutine = StartCoroutine(UnfreezeStaminaRegen());
         }
 
         private IEnumerator RightPunch()
         {
             LethalHandsPlugin.Instance.manualLogSource.LogInfo("Right Punch");
-            punchCooldown = punchDelay;
             playerControllerInstance.sprintMeter = Mathf.Clamp(playerControllerInstance.sprintMeter - staminaDrain, 0f, 1f);
             recordedStamina = playerControllerInstance.sprintMeter;
             freezeStaminaRegen = true;
             CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__rpunch");
-            yield return new WaitForSeconds(0.1f);
-            punchingCoroutine = null;
+            yield return new WaitForSeconds(punchConnectTime);
             PunchThrow();
-            yield return new WaitForSeconds(0.9f);
+            yield return new WaitForSeconds(punchFinishingTime);
+            punchingCoroutine = null;
+            if(unfreezeStaminaRegenCoroutine != null) StopCoroutine(unfreezeStaminaRegenCoroutine);
+            unfreezeStaminaRegenCoroutine = StartCoroutine(UnfreezeStaminaRegen());
+        }
+
+        private IEnumerator UnfreezeStaminaRegen()
+        {
+            yield return new WaitForSeconds(0.5f);
             freezeStaminaRegen = false;
         }
 
@@ -216,7 +227,6 @@ namespace LethalHands
                     }
                     try
                     {
-                        LethalHandsPlugin.Instance.manualLogSource.LogInfo($"Hit {hittable.GetType()}");
                         hittable.Hit(-22, forward, playerWhoHit: playerControllerInstance, playHitSFX: true);
                     } catch { }
                     break;
