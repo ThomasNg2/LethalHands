@@ -147,7 +147,7 @@ namespace LethalHands
         private IEnumerator LeftPunch()
         {
             LethalHandsPlugin.Instance.manualLogSource.LogInfo("Left Punch");
-            playerControllerInstance.sprintMeter = Mathf.Clamp(playerControllerInstance.sprintMeter - staminaDrain, 0f, 1f);
+            playerControllerInstance.sprintMeter = Mathf.Max(playerControllerInstance.sprintMeter - staminaDrain, 0f);
             recordedStamina = playerControllerInstance.sprintMeter;
             freezeStaminaRegen = true;
             CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__lpunch");
@@ -162,7 +162,7 @@ namespace LethalHands
         private IEnumerator RightPunch()
         {
             LethalHandsPlugin.Instance.manualLogSource.LogInfo("Right Punch");
-            playerControllerInstance.sprintMeter = Mathf.Clamp(playerControllerInstance.sprintMeter - staminaDrain, 0f, 1f);
+            playerControllerInstance.sprintMeter = Mathf.Max(playerControllerInstance.sprintMeter - staminaDrain, 0f);
             recordedStamina = playerControllerInstance.sprintMeter;
             freezeStaminaRegen = true;
             CustomEmotesAPI.PlayAnimation("SlapitNow.LethalHands__rpunch");
