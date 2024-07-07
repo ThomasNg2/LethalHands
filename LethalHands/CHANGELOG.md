@@ -1,3 +1,7 @@
+### v22.1.2 (v55/56) :
+	- Added fox tongues to the list of clingers
+	- Sitting in the Company Cruiser now exits the fighting mode
+
 ### v22.1.1 :
 	- Added a config option to toggle being able to punch snarefleas/tulip snakes (suggested by teacyn)
 	- Switched to a different system for cooldowns : 

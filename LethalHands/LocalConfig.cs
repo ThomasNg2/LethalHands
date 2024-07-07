@@ -26,7 +26,7 @@ namespace LethalHands
             punchCooldown = cfg.Bind("Balancing", "PunchCooldown", 1f, "Cooldown (in seconds) between punches");
             punchDamage = cfg.Bind("Balancing", "PunchDamage", 0.5f, "Damage dealt by a punch");
 
-            punchOffClingers = cfg.Bind("Balancing", "PunchOffClingers", true, "Whether punches should hit snarefleas/tulip snakes that are attached");
+            punchOffClingers = cfg.Bind("Balancing", "PunchOffClingers", true, "Whether punches should hit snarefleas/tulip snakes/fox tongues that are attached");
 
             staminaDrain = cfg.Bind("Stamina Balancing", "StaminaDrain", 0, "Max stamina drained (%) per punch");
             staminaRequirement = cfg.Bind("Stamina Balancing", "StaminaRequirement", 0, "Max stamina required (%) to punch");

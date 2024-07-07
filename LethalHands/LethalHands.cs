@@ -211,6 +211,10 @@ namespace LethalHands
                     if (hit.transform == playerControllerInstance.transform) continue; // Stop hitting yourself, (unless TZP ???)
                     hitSomething = true;
                     Vector3 forward = playerControllerInstance.gameplayCamera.transform.forward;
+                    if(hittable is BushWolfTongueCollider bushWolfTongueCollider)
+                    {
+                        if (!punchOffClingers && bushWolfTongueCollider.bushWolfScript.draggingPlayer == playerControllerInstance) continue;
+                    }
                     if (hittable is EnemyAICollisionDetect enemyAICollider)
                     {
                         EnemyAI enemyAI = enemyAICollider.mainScript;

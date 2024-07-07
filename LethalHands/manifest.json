@@ -1,11 +1,11 @@
 ﻿{
     "name": "LethalHands",
-    "version_number": "22.1.1",
+    "version_number": "22.1.2",
     "website_url": "https://github.com/ThomasNg2/LethalHands",
     "description": "Allows the usage of your hands to fight back in dire situations.",
     "dependencies": [
         "BepInEx-BepInExPack-5.4.2100",
-        "Gemumoddo-LethalEmotesAPI-1.12.5",
-        "Rune580-LethalCompany_InputUtils-0.7.4"
+        "Gemumoddo-LethalEmotesAPI-1.12.8",
+        "Rune580-LethalCompany_InputUtils-0.7.7"
     ]
 }

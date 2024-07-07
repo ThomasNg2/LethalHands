@@ -113,6 +113,7 @@
     <Compile Include="Patches\StartMatchLeverPatch.cs" />
     <Compile Include="Patches\StartOfRoundPatch.cs" />
     <Compile Include="Patches\TerminalPatch.cs" />
+    <Compile Include="Patches\VehicleControllerPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SyncedInstance.cs" />

@@ -21,7 +21,7 @@ The adjustable values are:
 - 'PunchCooldown' : How many seconds you must wait between punches [1] (some mods may affect this)
 - 'PunchDamage' : How much damage punches deal (1 is equivalent to a shovel/knife hit) [0.5]
 
-- 'PunchOffClingers' : Whether punches should hit attached snarefleas/tulip snakes [true]
+- 'PunchOffClingers' : Whether punches should hit attached snarefleas/tulip snakes/fox tongues [true]
 
 - 'StaminaDrain' : How much stamina (% of max stamina) is drained per punch [0]
 - 'StaminaRequirement' : How much stamina (% of max stamina) is required to punch [0]
@@ -37,4 +37,8 @@ The adjustable values are:
 
 ### Feedback
 
-Throw your suggestions/complaints/bugs on the [GitHub](https://github.com/ThomasNg2/LethalHands) or directly at me on Discord (dooglett)
+Throw your complaints/bugs :
+- in the dedicated thread in the [Lethal Company Modding Discord](https://discord.gg/lcmod)
+- on [GitHub](https://github.com/ThomasNg2/LethalHands)
+
+Suggestions are also appreciated but I'm no longer looking to expand the mod.
