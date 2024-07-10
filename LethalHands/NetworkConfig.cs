@@ -10,7 +10,8 @@ namespace LethalHands
     {
         public float punchRange;
         public float punchCooldown;
-        public float punchDamage;
+        public float enemyPunchDamage;
+        public int playerPunchDamage;
 
         public bool punchOffClingers;
 
@@ -26,7 +27,8 @@ namespace LethalHands
             InitInstance(this);
             punchRange = LocalConfig.punchRange.Value;
             punchCooldown = LocalConfig.punchCooldown.Value;
-            punchDamage = LocalConfig.punchDamage.Value;
+            enemyPunchDamage = LocalConfig.enemyPunchDamage.Value;
+            playerPunchDamage = LocalConfig.playerPunchDamage.Value;
 
             punchOffClingers = LocalConfig.punchOffClingers.Value;
 

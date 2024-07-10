@@ -1,3 +1,6 @@
+### v22.1.3 :
+	- Added a config option for player damage
+
 ### v22.1.2 (v55/56) :
 	- Added fox tongues to the list of clingers
 	- Sitting in the Company Cruiser now exits the fighting mode

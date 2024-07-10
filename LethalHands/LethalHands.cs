@@ -25,7 +25,8 @@ namespace LethalHands
 
         float punchRange = NetworkConfig.Default.punchRange; // Shovel : 1.5, Knife : 0.75
         float punchDelay = NetworkConfig.Default.punchCooldown;
-        public float punchDamage = NetworkConfig.Default.punchDamage;
+        public float enemyPunchDamage = NetworkConfig.Default.enemyPunchDamage;
+        public int playerPunchDamage = NetworkConfig.Default.playerPunchDamage;
 
         bool punchOffClingers = NetworkConfig.Default.punchOffClingers;
 
@@ -50,7 +51,8 @@ namespace LethalHands
         {
             punchRange = NetworkConfig.Instance.punchRange;
             punchDelay = NetworkConfig.Instance.punchCooldown * 4;
-            punchDamage = NetworkConfig.Instance.punchDamage;
+            enemyPunchDamage = NetworkConfig.Instance.enemyPunchDamage;
+            playerPunchDamage = NetworkConfig.Instance.playerPunchDamage;
 
             punchOffClingers = NetworkConfig.Instance.punchOffClingers;
 

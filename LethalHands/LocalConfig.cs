@@ -6,7 +6,8 @@ namespace LethalHands
     {
         public static ConfigEntry<float> punchRange;
         public static ConfigEntry<float> punchCooldown;
-        public static ConfigEntry<float> punchDamage;
+        public static ConfigEntry<float> enemyPunchDamage;
+        public static ConfigEntry<int> playerPunchDamage;
 
         public static ConfigEntry<bool> punchOffClingers;
 
@@ -24,7 +25,9 @@ namespace LethalHands
         {
             punchRange = cfg.Bind("Balancing", "PunchRange", 1.2f, "Range of the punch (for reference, shovels are 1.5 and knives are 0.75)");
             punchCooldown = cfg.Bind("Balancing", "PunchCooldown", 1f, "Cooldown (in seconds) between punches");
-            punchDamage = cfg.Bind("Balancing", "PunchDamage", 0.5f, "Damage dealt by a punch");
+            enemyPunchDamage = cfg.Bind("Balancing", "EnemyPunchDamage", 0.5f, "Damage dealt by a punch to enemies");
+            playerPunchDamage = cfg.Bind("Balancing", "PlayerPunchDamage", 10, "Damage dealt by a punch to other players");
+
 
             punchOffClingers = cfg.Bind("Balancing", "PunchOffClingers", true, "Whether punches should hit snarefleas/tulip snakes/fox tongues that are attached");
 

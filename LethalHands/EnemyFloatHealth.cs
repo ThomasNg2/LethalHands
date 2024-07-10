@@ -29,7 +29,7 @@ namespace LethalHands
                 FieldInfo isInspectingAttribute = typeof(NutcrackerEnemyAI).GetField("isInspecting", BindingFlags.NonPublic | BindingFlags.Instance);
                 if(!(bool)isInspectingAttribute.GetValue(nutcracker) && nutcracker.currentBehaviourStateIndex != 2) return 0;
             }
-            enemyHitCounter[enemy] += LethalHands.Instance.punchDamage;
+            enemyHitCounter[enemy] += LethalHands.Instance.enemyPunchDamage;
             while (enemyHitCounter[enemy] >= 1f)
             {
                 enemyHitCounter[enemy]--;

@@ -19,7 +19,8 @@ How balanced the mod is can be adjusted in the `BepInEx/config/SlapitNow.LethalH
 The adjustable values are:
 - 'PunchRange' : How far the punches can reach [1.2]  (for reference, shovel is 1.5 and knife is 0.75)
 - 'PunchCooldown' : How many seconds you must wait between punches [1] (some mods may affect this)
-- 'PunchDamage' : How much damage punches deal (1 is equivalent to a shovel/knife hit) [0.5]
+- 'EnemyPunchDamage' : How much damage punches deal to enemies (1 is equivalent to a shovel/knife hit) [0.5]
+- 'PlayerPunchDamage' : How much damage punches deal to other players (shovels/knives do 20 per hit) [10]
 
 - 'PunchOffClingers' : Whether punches should hit attached snarefleas/tulip snakes/fox tongues [true]
 
