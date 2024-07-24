@@ -1,3 +1,6 @@
+### v22.1.4 :
+	- Updated animation parameters to no longer trigger LethalEmotesAPI's animated healthbar player outline (thank u Nunchuk part 2)
+
 ### v22.1.3 :
 	- Added a config option for player damage
 
@@ -38,7 +41,7 @@
 	
 
 ### v22.0.6 :
-	- Animations now use new parameters to force first person instead of overwriting LethalEmotesAPI's settings
+	- Animations now use new parameters to force first person instead of overwriting LethalEmotesAPI's settings (thank u Nunchuk)
 
 ### v22.0.5 :
 	- Added configuration for punches (range, cooldown, damage, stamina drain,chance to deal damage)

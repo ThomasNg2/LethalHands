@@ -1,5 +1,4 @@
-﻿using EmotesAPI;
-using LethalEmotesAPI.ImportV2;
+﻿using LethalEmotesAPI.ImportV2;
 using UnityEngine;
 
 namespace LethalHands
@@ -25,7 +24,8 @@ namespace LethalHands
                 internalName = "squareup",
                 rootBonesToIgnore = ignoredRootBones,
                 soloBonesToIgnore = ignoredSoloBones,
-                useLocalTransforms = true
+                useLocalTransforms = true,
+                animateHealthbar = false
             };
 
             CustomEmoteParams squareDownParams = new CustomEmoteParams
@@ -42,7 +42,8 @@ namespace LethalHands
                 internalName = "squaredown",
                 rootBonesToIgnore = ignoredRootBones,
                 soloBonesToIgnore = ignoredSoloBones,
-                useLocalTransforms = true
+                useLocalTransforms = true,
+                animateHealthbar = false
             };
 
             CustomEmoteParams LPunchParams = new CustomEmoteParams
@@ -61,7 +62,8 @@ namespace LethalHands
                 internalName = "lpunch",
                 rootBonesToIgnore = ignoredRootBones,
                 soloBonesToIgnore = ignoredSoloBones,
-                useLocalTransforms = true
+                useLocalTransforms = true,
+                animateHealthbar = false    
             };
 
             CustomEmoteParams RPunchParams = new CustomEmoteParams
@@ -80,7 +82,8 @@ namespace LethalHands
                 internalName = "rpunch",
                 rootBonesToIgnore = ignoredRootBones,
                 soloBonesToIgnore = ignoredSoloBones,
-                useLocalTransforms = true
+                useLocalTransforms = true,
+                animateHealthbar = false
             };
 
             EmoteImporter.ImportEmote(squareUpParams);
