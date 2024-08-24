@@ -28,7 +28,7 @@ namespace LethalHands
         public float enemyPunchDamage = NetworkConfig.Default.enemyPunchDamage;
         public int playerPunchDamage = NetworkConfig.Default.playerPunchDamage;
 
-        bool punchOffClingers = NetworkConfig.Default.punchOffClingers;
+        int punchOffClingersChance = NetworkConfig.Default.punchOffClingersChance;
 
         float staminaDrain = NetworkConfig.Default.staminaDrain * 0.01f;
         public bool punchingHaltsStaminaRegen = NetworkConfig.Default.punchingHaltsStaminaRegen;
@@ -54,7 +54,7 @@ namespace LethalHands
             enemyPunchDamage = NetworkConfig.Instance.enemyPunchDamage;
             playerPunchDamage = NetworkConfig.Instance.playerPunchDamage;
 
-            punchOffClingers = NetworkConfig.Instance.punchOffClingers;
+            punchOffClingersChance = NetworkConfig.Instance.punchOffClingersChance;
 
             staminaDrain = NetworkConfig.Instance.staminaDrain * 0.01f;
             punchingHaltsStaminaRegen = NetworkConfig.Instance.punchingHaltsStaminaRegen;
@@ -213,19 +213,20 @@ namespace LethalHands
                     if (hit.transform == playerControllerInstance.transform) continue; // Stop hitting yourself, (unless TZP ???)
                     hitSomething = true;
                     Vector3 forward = playerControllerInstance.gameplayCamera.transform.forward;
-                    if(hittable is BushWolfTongueCollider bushWolfTongueCollider)
+                    bool hitClinger = punchOffClingersChance > 0 && Random.Range(0, 100) < punchOffClingersChance;
+                    if (!hitClinger && hittable is BushWolfTongueCollider bushWolfTongueCollider)
                     {
-                        if (!punchOffClingers && bushWolfTongueCollider.bushWolfScript.draggingPlayer == playerControllerInstance) continue;
+                        if (bushWolfTongueCollider.bushWolfScript.draggingPlayer == playerControllerInstance) continue;
                     }
                     if (hittable is EnemyAICollisionDetect enemyAICollider)
                     {
                         EnemyAI enemyAI = enemyAICollider.mainScript;
                         if(enemyAI.isEnemyDead) continue;
-                        if(!punchOffClingers && enemyAI is CentipedeAI snarefleaAI)
+                        if(!hitClinger && enemyAI is CentipedeAI snarefleaAI)
                         {
                             if (snarefleaAI.clingingToPlayer == playerControllerInstance) continue;
                         }
-                        if(!punchOffClingers && enemyAI is FlowerSnakeEnemy tulipSnekAI)
+                        if(!hitClinger && enemyAI is FlowerSnakeEnemy tulipSnekAI)
                         {
                             if (tulipSnekAI.clingingToPlayer == playerControllerInstance) continue;
                         }

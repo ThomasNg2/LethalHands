@@ -1,3 +1,6 @@
+### v22.1.5 :
+	- Changed the clinger config to be a probability instead of a boolean (suggested by Xeraccoon)
+
 ### v22.1.4 :
 	- Updated animation parameters to no longer trigger LethalEmotesAPI's animated healthbar player outline (thank u Nunchuk part 2)
 

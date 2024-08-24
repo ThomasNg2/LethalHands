@@ -9,7 +9,7 @@ namespace LethalHands
         public static ConfigEntry<float> enemyPunchDamage;
         public static ConfigEntry<int> playerPunchDamage;
 
-        public static ConfigEntry<bool> punchOffClingers;
+        public static ConfigEntry<int> punchOffClingersChance;
 
         public static ConfigEntry<int> staminaDrain;
         public static ConfigEntry<int> staminaRequirement;
@@ -29,7 +29,7 @@ namespace LethalHands
             playerPunchDamage = cfg.Bind("Balancing", "PlayerPunchDamage", 10, "Damage dealt by a punch to other players");
 
 
-            punchOffClingers = cfg.Bind("Balancing", "PunchOffClingers", true, "Whether punches should hit snarefleas/tulip snakes/fox tongues that are attached");
+            punchOffClingersChance = cfg.Bind("Balancing", "PunchOffClingersChance", 100, "How likely (%) your own punches are to hit snarefleas/tulip snakes/fox tongues that are attached to yourself");
 
             staminaDrain = cfg.Bind("Stamina Balancing", "StaminaDrain", 0, "Max stamina drained (%) per punch");
             staminaRequirement = cfg.Bind("Stamina Balancing", "StaminaRequirement", 0, "Max stamina required (%) to punch");

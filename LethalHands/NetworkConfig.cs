@@ -13,7 +13,7 @@ namespace LethalHands
         public float enemyPunchDamage;
         public int playerPunchDamage;
 
-        public bool punchOffClingers;
+        public int punchOffClingersChance;
 
         public bool punchingHaltsStaminaRegen;
         public int punchStaminaRequirement;
@@ -30,7 +30,7 @@ namespace LethalHands
             enemyPunchDamage = LocalConfig.enemyPunchDamage.Value;
             playerPunchDamage = LocalConfig.playerPunchDamage.Value;
 
-            punchOffClingers = LocalConfig.punchOffClingers.Value;
+            punchOffClingersChance = LocalConfig.punchOffClingersChance.Value;
 
             staminaDrain = LocalConfig.staminaDrain.Value;
             punchStaminaRequirement = LocalConfig.staminaRequirement.Value;
