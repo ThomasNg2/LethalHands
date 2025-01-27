@@ -32,7 +32,7 @@ The adjustable values are:
 - 'StaminaRequirement' : How much stamina (% of max stamina) is required to punch [0%]
 - 'PunchingHaltsStaminaRegen' : Whether punching should halt stamina regen for a brief period [false]
 
-- 'ItemDropMode' : Whether all items, the current item, or no items should be dropped upon squaring up [All]
+- 'ItemDropMode' : Whether all items, only the 4 main slot items, the current item, or no items should be dropped upon squaring up [All]
 - 'AllowItems' : Whether items can be held while squared up [false]
 
 ### Credits

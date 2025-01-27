@@ -113,6 +113,14 @@ namespace LethalHands
                     case ItemMode.All:
                         playerControllerInstance.DropAllHeldItemsAndSync();
                         break;
+                    case ItemMode.MainSlots:
+                        for(int i = 0; i < 4; i++)
+                        {
+                            playerControllerInstance.GetType().GetMethod("SwitchToItemSlot", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(playerControllerInstance, new object[] { i, null });
+                            if (playerControllerInstance.isHoldingObject) playerControllerInstance.DiscardHeldObject();
+                        }
+                        playerControllerInstance.GetType().GetMethod("SwitchToItemSlot", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(playerControllerInstance, new object[] { 0, null });
+                        break;
                     case ItemMode.Current:
                         if(playerControllerInstance.isHoldingObject) playerControllerInstance.DiscardHeldObject();
                         break;

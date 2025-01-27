@@ -1,3 +1,6 @@
+### v22.1.6 :
+	- Added a new config option to restrict dropped items (upon squaring up) to only the 4 main slots (for compatibility with Reserved<Tool>Slot mods)
+
 ### v22.1.5 :
 	- Changed the clinger config to be a probability instead of a boolean (suggested by Xeraccoon)
 

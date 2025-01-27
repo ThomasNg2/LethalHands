@@ -35,7 +35,7 @@ namespace LethalHands
             staminaRequirement = cfg.Bind("Stamina Balancing", "StaminaRequirement", 0, "Max stamina required (%) to punch");
             punchingHaltsStaminaRegen = cfg.Bind("Stamina Balancing", "PunchingHaltsStaminaRegen", false, "Whether punching should halt stamina regeneration for a brief period");
 
-            itemDropMode = cfg.Bind("Item Interaction", "ItemDropMode", ItemMode.All, "Whether to drop all items, only the current item, or no items upon squaring up");
+            itemDropMode = cfg.Bind("Item Interaction", "ItemDropMode", ItemMode.All, "Whether to drop all items, the 4 main slots items, only the current item, or no items upon squaring up");
             allowItems = cfg.Bind("Item Interaction", "AllowItems", false, "Whether to allow items to be held while squared up");
             networkConfig = new NetworkConfig();
         }
@@ -44,6 +44,7 @@ namespace LethalHands
     public enum ItemMode
     {
         All,
+        MainSlots,
         Current,
         None
     }
