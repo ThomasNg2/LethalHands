@@ -114,15 +114,11 @@ namespace LethalHands
                         playerControllerInstance.DropAllHeldItemsAndSync();
                         break;
                     case ItemMode.MainSlots:
-                        for(int i = 0; i < 4; i++)
-                        {
-                            playerControllerInstance.GetType().GetMethod("SwitchToItemSlot", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(playerControllerInstance, new object[] { i, null });
-                            if (playerControllerInstance.isHoldingObject) playerControllerInstance.DiscardHeldObject();
-                        }
-                        playerControllerInstance.GetType().GetMethod("SwitchToItemSlot", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(playerControllerInstance, new object[] { 0, null });
+                        DropMainItems((int)playerControllerInstance.playerClientId);
+                        LethalHandsNetworker.Instance.DropMainItemsServerRpc((int)playerControllerInstance.playerClientId);
                         break;
                     case ItemMode.Current:
-                        if(playerControllerInstance.isHoldingObject) playerControllerInstance.DiscardHeldObject();
+                        if (playerControllerInstance.isHoldingObject) playerControllerInstance.DiscardHeldObject();
                         break;
                     case ItemMode.None:
                         break;
@@ -277,6 +273,69 @@ namespace LethalHands
                 IngamePlayerSettings.Instance.playerInput.actions.FindAction("PingScan").performed -= RightPunchPerformed;
             }
             Instance = null;
+        }
+
+        // copy of the original DropAllHeldItems that's limited to only the 4 main slots for hotbar mods compatibility
+        public void DropMainItems(int playerID)
+        {
+            PlayerControllerB p = StartOfRound.Instance.allPlayerScripts[playerID];
+            for (int i = 0; i < 4; i++)
+            {
+                GrabbableObject grabbableObject = p.ItemSlots[i];
+                if (!(grabbableObject != null))
+                {
+                    continue;
+                }
+                grabbableObject.parentObject = null;
+                grabbableObject.heldByPlayerOnServer = false;
+                if (p.isInElevator)
+                {
+                    grabbableObject.transform.SetParent(p.playersManager.elevatorTransform, worldPositionStays: true);
+                }
+                else
+                {
+                    grabbableObject.transform.SetParent(p.playersManager.propsContainer, worldPositionStays: true);
+                }
+                p.SetItemInElevator(p.isInHangarShipRoom, p.isInElevator, grabbableObject);
+                grabbableObject.EnablePhysics(enable: true);
+                grabbableObject.EnableItemMeshes(enable: true);
+                grabbableObject.transform.localScale = grabbableObject.originalScale;
+                grabbableObject.isHeld = false;
+                grabbableObject.isPocketed = false;
+                grabbableObject.startFallingPosition = grabbableObject.transform.parent.InverseTransformPoint(grabbableObject.transform.position);
+                grabbableObject.FallToGround(randomizePosition: true);
+                grabbableObject.fallTime = Random.Range(-0.3f, 0.05f);
+                if (p.IsOwner)
+                {
+                    grabbableObject.DiscardItemOnClient();
+                }
+                else if (!grabbableObject.itemProperties.syncDiscardFunction)
+                {
+                    grabbableObject.playerHeldBy = null;
+                }
+                if (p.IsOwner)
+                {
+                    HUDManager.Instance.holdingTwoHandedItem.enabled = false;
+                    HUDManager.Instance.itemSlotIcons[i].enabled = false;
+                    HUDManager.Instance.ClearControlTips();
+                    p.activatingItem = false;
+                }
+                p.ItemSlots[i] = null;
+            }
+            if (p.isHoldingObject && p.currentItemSlot < 4)
+            {
+                p.isHoldingObject = false;
+                if (p.currentlyHeldObjectServer != null)
+                {
+                    p.GetType().GetMethod("SetSpecialGrabAnimationBool", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(p, new object[] { false, p.currentlyHeldObjectServer });
+                }
+                p.playerBodyAnimator.SetBool("cancelHolding", value: true);
+                p.playerBodyAnimator.SetTrigger("Throw");
+            }
+            p.activatingItem = false;
+            p.twoHanded = false;
+            p.carryWeight = 1f;
+            p.currentlyHeldObjectServer = null;
         }
     }
 }

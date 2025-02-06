@@ -1,3 +1,6 @@
+### v22.1.7 :
+	- Changed the way the MainSlots item mode works to fix an issue with items becoming invisible and unpickable for non-host players
+
 ### v22.1.6 :
 	- Added a new config option to restrict dropped items (upon squaring up) to only the 4 main slots (for compatibility with Reserved<Tool>Slot mods)
 

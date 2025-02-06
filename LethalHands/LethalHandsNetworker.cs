@@ -30,5 +30,17 @@ namespace LethalHands
         {
             LethalHands.Instance.PunchHitSound(playerID, soundIndex, terrainIndex);
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void DropMainItemsServerRpc(int playerID)
+        {
+            DropMainItemsClientRpc(playerID);
+        }
+
+        [ClientRpc]
+        public void DropMainItemsClientRpc(int playerID)
+        {
+            LethalHands.Instance.DropMainItems(playerID);
+        }
     }
 }
