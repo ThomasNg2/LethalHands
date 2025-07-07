@@ -1,3 +1,7 @@
+### v22.1.8 :
+	- Recompiled for v70+
+	- Updated mod dependencies versions
+
 ### v22.1.7 :
 	- Changed the way the MainSlots item mode works to fix an issue with items becoming invisible and unpickable for non-host players
 
