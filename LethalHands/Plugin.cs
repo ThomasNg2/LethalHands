@@ -10,19 +10,19 @@ namespace LethalHands
 {
     [BepInPlugin(modGUID, modName, modVersion)]
     [BepInDependency(CustomEmotesAPI.PluginGUID, BepInDependency.DependencyFlags.HardDependency)]
-    [BepInDependency(LethalCompanyInputUtilsPlugin.ModId, BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("com.rune580.LethalCompanyInputUtils", BepInDependency.DependencyFlags.HardDependency)]
     public class LethalHandsPlugin : BaseUnityPlugin
     {
         private const string modGUID = "SlapitNow.LethalHands";
         private const string modName = "Lethal Hands";
-        private const string modVersion = "22.1.8";
+        private const string modVersion = "23.0.1";
 
         public static LethalHandsPlugin Instance;
         private readonly Harmony harmony = new Harmony(modGUID);
         public ManualLogSource manualLogSource;
         public static LocalConfig MyConfig { get; internal set; }
 
-        public static PluginInfo PInfo { get; private set; }
+        public static BepInEx.PluginInfo PInfo { get; private set; }
 
         private static void NetcodePatcher()
         {
