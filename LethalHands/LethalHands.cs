@@ -111,7 +111,7 @@ namespace LethalHands
                 switch (itemMode)
                 {
                     case ItemMode.All:
-                        playerControllerInstance.DropAllHeldItemsAndSync();
+                        playerControllerInstance.DropAllHeldItemsAndSyncNonexact();
                         break;
                     case ItemMode.MainSlots:
                         DropMainItems((int)playerControllerInstance.playerClientId);
